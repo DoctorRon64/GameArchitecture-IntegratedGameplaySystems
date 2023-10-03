@@ -1,28 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    TileManager tileManager;
+    //ScriptableObjects
+    [SerializeField] private GridSettings gridSettings;
 
-    private void Awake()
+    //Lists
+    private List<IUpdateable> updateables = new List<IUpdateable>();
+    private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
+
+    //////////////////////////////////////////////////
+
+    public void Awake()
     {
-        
+        if (gridSettings == null)
+        {
+            Debug.LogError("GameManager has no reference to gridSettings");
+        }
     }
 
-    void Start()
+    public void Start()
     {
-        
+        Add(new GridManager(gridSettings));
     }
 
-    void Update()
+    /////////////////////////////////////////////////
+
+    public void Add(IUpdateable script)
     {
-        tileManager.OnUpdate();
+        updateables.Add(script);
+
+        if (script is IFixedUpdateable)
+        {
+            fixedUpdateables.Add(script as IFixedUpdateable);
+        }
+    }
+
+    public void Remove(IUpdateable script)
+    {
+        updateables.Remove(script);
+
+        if (script is IFixedUpdateable)
+        {
+            fixedUpdateables.Remove(script as IFixedUpdateable);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    private void Update()
+    {
+        foreach (IUpdateable iUpdateble in updateables)
+        {
+            iUpdateble.OnUpdate();
+        }
     }
 
     private void FixedUpdate()
     {
-        
+        foreach (IFixedUpdateable iFixedUpdateble in fixedUpdateables)
+        {
+            iFixedUpdateble.OnFixedUpdate();
+        }
     }
 }
