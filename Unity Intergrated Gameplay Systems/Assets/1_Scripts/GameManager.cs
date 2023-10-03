@@ -5,23 +5,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //ScriptableObjects
+    [SerializeField] private GridSettings gridSettings;
+
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
 
-    public void Start()
+    //////////////////////////////////////////////////
+
+    public void Awake()
     {
-        Add(new TileManager());
+        if (gridSettings == null)
+        {
+            Debug.LogError("GameManager has no reference to gridSettings");
+        }
     }
 
-    public void Add(IStartable script)
+    public void Start()
     {
-        script.OnStart();
+        Add(new GridManager(gridSettings));
+    }
 
-        if (script is IUpdateable)
-        {
-            updateables.Add(script as IUpdateable);
-        }
+    /////////////////////////////////////////////////
+
+    public void Add(IUpdateable script)
+    {
+        updateables.Add(script);
 
         if (script is IFixedUpdateable)
         {
@@ -29,12 +39,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Remove(IStartable script)
+    public void Remove(IUpdateable script)
     {
-        if (script is IUpdateable)
-        {
-            updateables.Remove(script as IUpdateable);
-        }
+        updateables.Remove(script);
 
         if (script is IFixedUpdateable)
         {
@@ -42,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
 
     private void Update()
     {
