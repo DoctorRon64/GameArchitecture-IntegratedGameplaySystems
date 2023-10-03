@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2abcb873563e286428bda569ecb2ba51, type: 3}
+  m_Script: {fileID: 11500000, guid: b0b5eeb8b93e05c49ac7fc85e10e78c4, type: 3}
   m_Name: GridSettings
   m_EditorClassIdentifier: 
   Size: {x: 100, y: 100}
@@ -20,6 +20,6 @@ MonoBehaviour:
   dirt:
     MaxHealth: 5
   stone:
-    MaxHealth: 20
+    MaxHealth: 25
   hardStone:
     MaxHealth: 50
