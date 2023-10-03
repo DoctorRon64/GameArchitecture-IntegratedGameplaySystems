@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileManager : IUpdateable
+[System.Serializable]
+public class TileManager : IStartable, IUpdateable
 {
+    public void OnStart()
+    {
+
+    }
+
     public void OnUpdate()
     {
-        
+
     }
 }
