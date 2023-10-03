@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUpdateable
+public interface IStartable 
 {
-    public void OnUpdate();
+    void OnStart();
 }
