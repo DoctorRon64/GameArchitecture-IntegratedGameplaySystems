@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    TileManager tileManager;
+
     private void Awake()
     {
         
@@ -16,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+        tileManager.OnUpdate();
     }
 
     private void FixedUpdate()
