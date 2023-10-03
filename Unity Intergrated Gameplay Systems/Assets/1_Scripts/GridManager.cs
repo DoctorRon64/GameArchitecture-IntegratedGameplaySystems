@@ -1,23 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.tvOS;
 
 [System.Serializable]
 public class GridManager : IUpdateable
 {
-    GridSettings gridSettings;
+    private GridSettings gs;
+    private GameObject parentGameObject;
 
     private Tile[,] grid;
 
-    private GameObject floor = Resources.Load<GameObject>("Prefabs/Floor");
+    private GameObject dirtPrefab = Resources.Load<GameObject>("Prefabs/dirt");
+    private GameObject stonePrefab = Resources.Load<GameObject>("Prefabs/stone");
+    private GameObject hardStonePrefab = Resources.Load<GameObject>("Prefabs/hardStone");
 
-
-    /////////////////////////////////////////////////////////////////
 
     public GridManager(GridSettings _gridSettings)
     {
-        gridSettings = _gridSettings;
-        grid = new Tile[gridSettings.Size.x, gridSettings.Size.y];
+        gs = _gridSettings;
+        grid = new Tile[gs.Size.x, gs.Size.y];
+
+        //Tile Parent
+        parentGameObject = new GameObject();
+        parentGameObject.name = "Tiles";
 
         GeneratePlanet();
     }
@@ -29,9 +35,18 @@ public class GridManager : IUpdateable
 
     public void AddTile(GameObject prefab, Vector2Int pos)
     {
-        if (CheckIfIsIngridBounds(pos))
+        if (CheckIfIsInGridBounds(pos))
         {
-            grid[pos.x, pos.y] = new Tile(prefab, pos);
+            Tile currentTile = grid[pos.x, pos.y];
+
+            if (currentTile != null)
+            {
+                RemoveTile(pos);
+            }
+
+            currentTile = new Tile(prefab, pos, parentGameObject);
+            currentTile.OnDied += RemoveTile;
+
         }
         else
         {
@@ -41,43 +56,67 @@ public class GridManager : IUpdateable
 
     public void RemoveTile(Vector2Int pos)
     {
-        if (CheckIfIsIngridBounds(pos))
+        if (CheckIfIsInGridBounds(pos))
         {
+            GameObject.Destroy(grid[pos.x, pos.y].GameObjectInstance);
+            grid[pos.x, pos.y].OnDied -= RemoveTile;
             grid[pos.x, pos.y] = null;
         }
         else
         {
-            Debug.LogError("AddTile: " + pos.x + ", " + pos.y + " Is out of bounds");
+            Debug.LogError("RemoveTile: " + pos.x + ", " + pos.y + " Is out of bounds");
         }
     }
-
-    /////////////////////////////////////////////////////////////////
 
     private void GeneratePlanet()
     {
-        int gridMiddlePoint = ((gridSettings.Size.x / 2) + (gridSettings.Size.y / 2)) / 2;
-        int radiusBegin = gridMiddlePoint - gridSettings.PlanetRadius;
-        int radiusEnd = gridMiddlePoint + gridSettings.PlanetRadius;
+        Vector2Int gridMiddlePoint = new Vector2Int(gs.Size.x / 2, gs.Size.y / 2);
 
-        if (gridMiddlePoint - gridSettings.PlanetRadius < 0) { Debug.LogError("Planet radius too big"); }
+        int dirtEndRadius = gs.PlanetRadius;
+        int dirtStartRadius = dirtEndRadius - (gs.PlanetRadius * gs.DirtPercentage / 100);
 
-        for (int y = radiusBegin; y < radiusEnd; y++)
-        {
-            for (int x = radiusBegin; x < radiusEnd; x++)
-            {
-                //if (Vector2.Distance(new Vector2(x, y), new Vector2(gridMiddlePoint, gridMiddlePoint)))
-                //{
-                //    AddTile(floor, new Vector2Int(x, y));
-                //}
-            }
-        }
+        int stoneEndRadius = dirtStartRadius;
+        int stoneStartRadius = stoneEndRadius - (gs.PlanetRadius * gs.StonePercentage / 100);
+
+        int hardStoneEndRadius = stoneStartRadius;
+        int hardStoneStartRadius = hardStoneEndRadius - (gs.PlanetRadius * gs.HardStonePercentage / 100);
+
+        GenerateCircle(dirtPrefab, dirtEndRadius, dirtStartRadius, gridMiddlePoint);
+        GenerateCircle(stonePrefab, stoneEndRadius, stoneStartRadius, gridMiddlePoint);
+        GenerateCircle(hardStonePrefab, hardStoneEndRadius, hardStoneStartRadius, gridMiddlePoint);
     }
 
-    private bool CheckIfIsIngridBounds(Vector2Int pos)
+    private void GenerateCircle(GameObject prefab, int endRadius, int startRadius, Vector2Int middlePoint)
     {
-        if (pos.y >= 0 && pos.y <= gridSettings.Size.y)
+        //StartRadius is where the circle starts generating from the inside out
+        //EndRadius is where the circlestops generation from inside out
+
+        //Check if circle fits in the grid
+        if (!CheckIfIsInGridBounds(new Vector2Int(middlePoint.x - endRadius, middlePoint.y - endRadius)) ||
+            !CheckIfIsInGridBounds(new Vector2Int(middlePoint.x + endRadius, middlePoint.y + endRadius))) { Debug.LogError("Planet radius too big"); }
+        else
         {
-            if (pos.x >= 0 && pos.x <= gridSettings.Size.x)
+            for (int y = middlePoint.y - endRadius; y < middlePoint.y + endRadius; y++)
+            {
+                for (int x = middlePoint.x -endRadius; x < middlePoint.x + endRadius; x++)
+                {
+                    if (Vector2.Distance(new Vector2(x, y), new Vector2(middlePoint.x, middlePoint.y)) <= endRadius &&
+                        Vector2.Distance(new Vector2(x, y), new Vector2(middlePoint.x, middlePoint.y)) >= startRadius)
+                    {
+                        AddTile(prefab, new Vector2Int(x, y));
+                    }
+                }
+            }
+        }
+
+        //TODO add some randomness
+    }
+
+    private bool CheckIfIsInGridBounds(Vector2Int pos)
+    {
+        if (pos.y >= 0 && pos.y <= gs.Size.y)
+        {
+            if (pos.x >= 0 && pos.x <= gs.Size.x)
             {
                 return true;
             }
