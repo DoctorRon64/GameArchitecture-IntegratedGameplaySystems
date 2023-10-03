@@ -7,5 +7,15 @@ public class GridSettings : ScriptableObject
 {
     [Header("Grid Settings")]
     public Vector2Int Size;
+
+    [Header("Planet Settings")]
     public int PlanetRadius;
+    public int DirtPercentage;
+    public int StonePercentage;
+    public int HardStonePercentage;
+
+    [Header("Tile Settings")]
+    public TileData dirt;
+    public TileData stone;
+    public TileData hardStone;
 }

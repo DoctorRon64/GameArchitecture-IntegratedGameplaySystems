@@ -14,13 +14,12 @@ public class Tile : IDamagable
     public delegate void TileDied(Vector2Int pos);
     public event TileDied OnDied;
 
-    ///////////////////////////////////////////////////////////////
-
-    public Tile(GameObject prefab, Vector2Int _pos)
+    public Tile(GameObject prefab, Vector2Int _pos, GameObject parent)
     {
         Pos = _pos;
         GameObjectPrefab = prefab;
         GameObjectInstance = GameObject.Instantiate(prefab, new Vector3(_pos.x, -_pos.y, 0), Quaternion.identity);
+        GameObjectInstance.transform.SetParent(parent.transform);
     }
 
     //IDamagable

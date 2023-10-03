@@ -13,4 +13,13 @@ MonoBehaviour:
   m_Name: GridSettings
   m_EditorClassIdentifier: 
   Size: {x: 100, y: 100}
-  PlanetRadius: 10
+  PlanetRadius: 50
+  DirtPercentage: 20
+  StonePercentage: 50
+  HardStonePercentage: 30
+  dirt:
+    MaxHealth: 5
+  stone:
+    MaxHealth: 20
+  hardStone:
+    MaxHealth: 50

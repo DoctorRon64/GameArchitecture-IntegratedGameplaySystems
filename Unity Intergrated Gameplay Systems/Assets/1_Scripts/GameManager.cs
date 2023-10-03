@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,8 +10,6 @@ public class GameManager : MonoBehaviour
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
-
-    //////////////////////////////////////////////////
 
     public void Awake()
     {
@@ -26,8 +23,6 @@ public class GameManager : MonoBehaviour
     {
         Add(new GridManager(gridSettings));
     }
-
-    /////////////////////////////////////////////////
 
     public void Add(IUpdateable script)
     {
@@ -48,8 +43,6 @@ public class GameManager : MonoBehaviour
             fixedUpdateables.Remove(script as IFixedUpdateable);
         }
     }
-
-    ////////////////////////////////////////////////////////////
 
     private void Update()
     {
