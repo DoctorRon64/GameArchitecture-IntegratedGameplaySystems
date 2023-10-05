@@ -15,7 +15,7 @@ public class GridSettings : ScriptableObject
     public int HardStonePercentage;
 
     [Header("Tile Settings")]
-    public TileData dirt;
-    public TileData stone;
-    public TileData hardStone;
+    public TileSettings dirt;
+    public TileSettings stone;
+    public TileSettings hardStone;
 }
