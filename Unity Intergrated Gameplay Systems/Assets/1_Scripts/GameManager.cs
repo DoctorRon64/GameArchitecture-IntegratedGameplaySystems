@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     //ScriptableObjects
     [SerializeField] private GridSettings gridSettings;
+    [SerializeField] private ObjectsInScene objectsInScene;
 
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         Add(new GridManager(gridSettings));
+        Add(new ObjectManager(objectsInScene));
     }
 
     public void Add(IUpdateable script)

@@ -22,6 +22,14 @@ public class ObjectPool<T> where T : IPoolable
 		}
     }
 
+    public void UpdateItem()
+    {
+        foreach (IUpdateable item in activePool)
+        {
+            item.OnUpdate();
+        }
+    }
+
     public void ActivateItem(T item)
     {
         item.EnablePoolabe();
