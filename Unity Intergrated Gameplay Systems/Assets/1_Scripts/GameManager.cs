@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour
     //ScriptableObjects
     [SerializeField] private GridSettings gridSettings;
 
-    //objects
-    [SerializeField] private GameObject PlayerPrefab;
-
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
