@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.tvOS;
 
@@ -7,23 +8,14 @@ using UnityEngine.tvOS;
 public class GridManager : IUpdateable
 {
     private GridSettings gs;
-    private GameObject parentGameObject;
-
     private Tile[,] grid;
-
-    private GameObject dirtPrefab = Resources.Load<GameObject>("Prefabs/dirt");
-    private GameObject stonePrefab = Resources.Load<GameObject>("Prefabs/stone");
-    private GameObject hardStonePrefab = Resources.Load<GameObject>("Prefabs/hardStone");
-
+    private TileFactory tileFactory;
 
     public GridManager(GridSettings _gridSettings)
     {
         gs = _gridSettings;
         grid = new Tile[gs.Size.x, gs.Size.y];
-
-        //Tile Parent
-        parentGameObject = new GameObject();
-        parentGameObject.name = "Tiles";
+        tileFactory = new TileFactory();
 
         GeneratePlanet();
     }
@@ -33,38 +25,38 @@ public class GridManager : IUpdateable
 
     }
 
-    public void AddTile(GameObject prefab, Vector2Int pos)
+    public void AddTile(string _tileType, Vector2Int _pos)
     {
-        if (CheckIfIsInGridBounds(pos))
+        if (CheckIfIsInGridBounds(_pos))
         {
-            Tile currentTile = grid[pos.x, pos.y];
+            Tile currentTile = grid[_pos.x, _pos.y];
 
             if (currentTile != null)
             {
-                RemoveTile(pos);
+                RemoveTile(_pos);
             }
 
-            currentTile = new Tile(prefab, pos, parentGameObject);
+            currentTile = tileFactory.Create(_tileType);
+            currentTile.Pos = _pos;
             currentTile.OnDied += RemoveTile;
-
         }
         else
         {
-            Debug.LogError("AddTile: " + pos.x + ", " + pos.y + " Is out of bounds");
+            Debug.LogError("AddTile: " + _pos.x + ", " + _pos.y + " Is out of bounds");
         }
     }
 
-    public void RemoveTile(Vector2Int pos)
+    public void RemoveTile(Vector2Int _pos)
     {
-        if (CheckIfIsInGridBounds(pos))
+        if (CheckIfIsInGridBounds(_pos))
         {
-            GameObject.Destroy(grid[pos.x, pos.y].GameObjectInstance);
-            grid[pos.x, pos.y].OnDied -= RemoveTile;
-            grid[pos.x, pos.y] = null;
+            GameObject.Destroy(grid[_pos.x, _pos.y].instance);
+            grid[_pos.x, _pos.y].OnDied -= RemoveTile;
+            grid[_pos.x, _pos.y] = null;
         }
         else
         {
-            Debug.LogError("RemoveTile: " + pos.x + ", " + pos.y + " Is out of bounds");
+            Debug.LogError("RemoveTile: " + _pos.x + ", " + _pos.y + " Is out of bounds");
         }
     }
 
@@ -81,12 +73,12 @@ public class GridManager : IUpdateable
         int hardStoneEndRadius = stoneStartRadius;
         int hardStoneStartRadius = hardStoneEndRadius - (gs.PlanetRadius * gs.HardStonePercentage / 100);
 
-        GenerateCircle(dirtPrefab, dirtEndRadius, dirtStartRadius, gridMiddlePoint);
-        GenerateCircle(stonePrefab, stoneEndRadius, stoneStartRadius, gridMiddlePoint);
-        GenerateCircle(hardStonePrefab, hardStoneEndRadius, hardStoneStartRadius, gridMiddlePoint);
+        GenerateCircle("Dirt", dirtEndRadius, dirtStartRadius, gridMiddlePoint);
+        GenerateCircle("Stone", stoneEndRadius, stoneStartRadius, gridMiddlePoint);
+        GenerateCircle("HardStone", hardStoneEndRadius, hardStoneStartRadius, gridMiddlePoint);
     }
 
-    private void GenerateCircle(GameObject prefab, int endRadius, int startRadius, Vector2Int middlePoint)
+    private void GenerateCircle(string tileType, int endRadius, int startRadius, Vector2Int middlePoint)
     {
         //StartRadius is where the circle starts generating from the inside out
         //EndRadius is where the circlestops generation from inside out
@@ -103,7 +95,7 @@ public class GridManager : IUpdateable
                     if (Vector2.Distance(new Vector2(x, y), new Vector2(middlePoint.x, middlePoint.y)) <= endRadius &&
                         Vector2.Distance(new Vector2(x, y), new Vector2(middlePoint.x, middlePoint.y)) >= startRadius)
                     {
-                        AddTile(prefab, new Vector2Int(x, y));
+                        AddTile(tileType, new Vector2Int(x, y));
                     }
                 }
             }
@@ -112,11 +104,11 @@ public class GridManager : IUpdateable
         //TODO add some randomness
     }
 
-    private bool CheckIfIsInGridBounds(Vector2Int pos)
+    private bool CheckIfIsInGridBounds(Vector2Int _pos)
     {
-        if (pos.y >= 0 && pos.y <= gs.Size.y)
+        if (_pos.y >= 0 && _pos.y <= gs.Size.y)
         {
-            if (pos.x >= 0 && pos.x <= gs.Size.x)
+            if (_pos.x >= 0 && _pos.x <= gs.Size.x)
             {
                 return true;
             }

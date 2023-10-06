@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct TileData
+public struct TileSettings
 {
     public int MaxHealth;
 }
