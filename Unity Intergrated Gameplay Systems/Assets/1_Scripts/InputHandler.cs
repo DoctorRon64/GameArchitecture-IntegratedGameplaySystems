@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputHandler : IUpdateable
 {
+    public Action OnLeftMouseButton;
+
     [SerializeField] private KeyCode shootButton;
     public float HorizontalInput;
     public float VerticalInput;
