@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     //objects
     [SerializeField] private GameObject PlayerPrefab;
-    [SerializeField] private GameObject BulletPrefab;
 
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         Add(new GridManager(gridSettings));
-        Add(new ObjectManager(PlayerPrefab, BulletPrefab));
+        Add(new ObjectManager());
     }
 
     public void Add(IUpdateable script)

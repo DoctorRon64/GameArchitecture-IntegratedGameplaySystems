@@ -4,40 +4,45 @@ using UnityEngine;
 
 public class ObjectManager : IUpdateable, IFixedUpdateable
 {
-    private GameObject playerPrefab;
+    private int maxBulletAmount = 10;
     private ObjectPool<Bullet> bulletPool;
-    [SerializeField] private int maxBulletAmount;
     private BulletFactory bulletFactory;
 
-    public ObjectManager(GameObject _player)
+    public ObjectManager()
     {
         bulletFactory = new BulletFactory();
-
-        playerPrefab = _player;
-
         bulletPool = new ObjectPool<Bullet>();
-        playerPrefab.GetComponent<PlayerData>().OnFireGun += HandleFireGun;
 
         for (int i = 0; i < maxBulletAmount; i++)
         {
-            GameObject newBullet = bulletFactory.Create("Bullet");
-            bulletPool.DeactivateItem(newBullet.GetComponent<Bullet>());
+            Bullet newBullet = bulletFactory.Create("Bullet");
+            bulletPool.DeactivateItem(newBullet);
+
+            Debug.Log(newBullet);
         }
-    }
-
-    private void HandleFireGun()
-    {
-        bulletPool.RequestObject(playerPrefab.transform.position);
-    }
-
-    public void OnUpdate()
-    {
-        playerPrefab.GetComponent<PlayerData>().OnUpdate();
-        bulletPool.UpdateItem();
     }
 
     public void OnFixedUpdate()
     {
-        playerPrefab.GetComponent<PlayerData>().OnFixedUpdate();
     }
+
+    public void OnUpdate()
+    {
+    }
+
+    //private void HandleFireGun()
+    //{
+    //    bulletPool.RequestObject(playerPrefab.transform.position);
+    //}
+
+    //public void OnUpdate()
+    //{
+    //    playerPrefab.GetComponent<PlayerData>().OnUpdate();
+    //    bulletPool.UpdateItem();
+    //}
+
+    //public void OnFixedUpdate()
+    //{
+    //    playerPrefab.GetComponent<PlayerData>().OnFixedUpdate();
+    //}
 }

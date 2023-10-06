@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletFactory : IFactory<GameObject, GameObject>
+public class BulletFactory : IFactory<Bullet, GameObject>
 {
     public Dictionary<string, GameObject> FactoryDictionary { get; set; }
     public GameObject Parent { get; set; }
@@ -23,12 +23,11 @@ public class BulletFactory : IFactory<GameObject, GameObject>
         FactoryDictionary.Add("Bullet", Resources.Load<GameObject>("Prefabs/Bullet"));
     }
 
-    public GameObject Create(string _key)
+    public Bullet Create(string _key)
     {
         if (FactoryDictionary.ContainsKey(_key))
         {
-            GameObject prefab = FactoryDictionary[_key];
-            return GameObject.Instantiate(prefab);
+            return new Bullet(FactoryDictionary[_key], Parent.transform);
         }
         else
         {
