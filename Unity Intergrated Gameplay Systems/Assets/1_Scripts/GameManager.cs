@@ -5,15 +5,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     //ScriptableObjects
-    [SerializeField] private GridSettings gridSettings;
+    [SerializeField] private GameSettings gameSettings;
 
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
 
+    //References
+    GridManager gridManager;
+    BulletManager bulletManager;
+
     public void Awake()
     {
-        if (gridSettings == null)
+        if (gameSettings == null)
         {
             Debug.LogError("GameManager has no reference to gridSettings");
         }
@@ -21,8 +25,10 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        Add(new GridManager(gridSettings));
-        Add(new BulletManager());
+        gridManager = new GridManager(gameSettings);
+
+        bulletManager = new BulletManager(gridManager, gameSettings);
+        Add(bulletManager);
     }
 
     public void Add(IUpdateable script)

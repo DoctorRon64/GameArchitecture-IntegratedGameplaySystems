@@ -5,40 +5,47 @@ using UnityEngine;
 using UnityEngine.tvOS;
 
 [System.Serializable]
-public class GridManager : IUpdateable
+public class GridManager
 {
-    private GridSettings gs;
     private Tile[,] grid;
     private TileFactory tileFactory;
 
-    public GridManager(GridSettings _gridSettings)
+    //References
+    private GameSettings gameSettings;
+
+    public GridManager(GameSettings _gameSettings)
     {
-        gs = _gridSettings;
-        grid = new Tile[gs.Size.x, gs.Size.y];
-        tileFactory = new TileFactory();
+        gameSettings = _gameSettings;
+        grid = new Tile[gameSettings.Size.x, gameSettings.Size.y];
+        tileFactory = new TileFactory(gameSettings);
 
         GeneratePlanet();
     }
 
-    public void OnUpdate()
+    public Tile GetTile(Vector2Int _pos)
     {
+        if (CheckIfIsInGridBounds(_pos))
+        {
+            return grid[_pos.x, _pos.y];
+        }
 
+        Debug.LogError("GetTile: " + _pos.x + ", " + _pos.y + " Is Not In Grid Bounds");
+        return null;
     }
 
     public void AddTile(string _tileType, Vector2Int _pos)
     {
         if (CheckIfIsInGridBounds(_pos))
         {
-            Tile currentTile = grid[_pos.x, _pos.y];
-
-            if (currentTile != null)
+            if (grid[_pos.x, _pos.y] != null)
             {
                 RemoveTile(_pos);
             }
 
-            currentTile = tileFactory.Create(_tileType);
-            currentTile.Pos = _pos;
-            currentTile.OnDied += RemoveTile;
+            //Instance
+            grid[_pos.x, _pos.y] = tileFactory.Create(_tileType);
+            grid[_pos.x, _pos.y].Pos = _pos;
+            grid[_pos.x, _pos.y].OnDied += RemoveTile;
         }
         else
         {
@@ -62,16 +69,16 @@ public class GridManager : IUpdateable
 
     private void GeneratePlanet()
     {
-        Vector2Int gridMiddlePoint = new Vector2Int(gs.Size.x / 2, gs.Size.y / 2);
+        Vector2Int gridMiddlePoint = new Vector2Int(gameSettings.Size.x / 2, gameSettings.Size.y / 2);
 
-        int dirtEndRadius = gs.PlanetRadius;
-        int dirtStartRadius = dirtEndRadius - (gs.PlanetRadius * gs.DirtPercentage / 100);
+        int dirtEndRadius = gameSettings.PlanetRadius;
+        int dirtStartRadius = dirtEndRadius - (gameSettings.PlanetRadius * gameSettings.DirtPercentage / 100);
 
         int stoneEndRadius = dirtStartRadius;
-        int stoneStartRadius = stoneEndRadius - (gs.PlanetRadius * gs.StonePercentage / 100);
+        int stoneStartRadius = stoneEndRadius - (gameSettings.PlanetRadius * gameSettings.StonePercentage / 100);
 
         int hardStoneEndRadius = stoneStartRadius;
-        int hardStoneStartRadius = hardStoneEndRadius - (gs.PlanetRadius * gs.HardStonePercentage / 100);
+        int hardStoneStartRadius = hardStoneEndRadius - (gameSettings.PlanetRadius * gameSettings.HardStonePercentage / 100);
 
         GenerateCircle("Dirt", dirtEndRadius, dirtStartRadius, gridMiddlePoint);
         GenerateCircle("Stone", stoneEndRadius, stoneStartRadius, gridMiddlePoint);
@@ -106,9 +113,9 @@ public class GridManager : IUpdateable
 
     private bool CheckIfIsInGridBounds(Vector2Int _pos)
     {
-        if (_pos.y >= 0 && _pos.y <= gs.Size.y)
+        if (_pos.y >= 0 && _pos.y <= gameSettings.Size.y)
         {
-            if (_pos.x >= 0 && _pos.x <= gs.Size.x)
+            if (_pos.x >= 0 && _pos.x <= gameSettings.Size.x)
             {
                 return true;
             }

@@ -14,6 +14,7 @@ public class ObjectPool<T> where T : IPoolable
     {
         if (inactivePool.Count <= 0)
         {
+            Debug.LogError("No More Inactive Pool Items. Increase Pool Size");
             return default (T);
         } 
         else
