@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         Add(new GridManager(gridSettings));
-        Add(new ObjectManager());
+        Add(new BulletManager());
     }
 
     public void Add(IUpdateable script)

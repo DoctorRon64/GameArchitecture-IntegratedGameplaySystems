@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectManager : IUpdateable, IFixedUpdateable
+public class BulletManager : IUpdateable, IFixedUpdateable
 {
     private int maxBulletAmount = 10;
     private ObjectPool<Bullet> bulletPool;
     private BulletFactory bulletFactory;
 
-
-
-    public ObjectManager()
+    public BulletManager()
     {
         bulletFactory = new BulletFactory();
         bulletPool = new ObjectPool<Bullet>();
@@ -19,14 +17,11 @@ public class ObjectManager : IUpdateable, IFixedUpdateable
         {
             Bullet newBullet = bulletFactory.Create("Bullet");
             bulletPool.DeactivateItem(newBullet);
-            newBullet.OnCollision += OnBulletCollsion;
         }
     }
 
     public void OnFixedUpdate()
     {
-
-
         bulletPool.UpdateItem();
     }
 
@@ -34,11 +29,12 @@ public class ObjectManager : IUpdateable, IFixedUpdateable
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bulletPool.RequestObject(Vector2.zero);
+            Bullet bullet = bulletPool.RequestObject(Vector2.zero);
+            bullet.OnCollision += OnBulletCollsion;
         }
     }
 
-    public void OnBulletCollsion(Collider2D other)
+    public  void OnBulletCollsion(Collider2D other, Bullet _instance)
     {
         Debug.Log(other.gameObject + "collides");
 
@@ -48,12 +44,16 @@ public class ObjectManager : IUpdateable, IFixedUpdateable
         {
             Damagable.TakeDamage(100);
         }
+
+        bulletPool.DeactivateItem(_instance);
+        _instance.OnCollision -= OnBulletCollsion;
     }
 
     //private void HandleFireGun()
     //{
     //    bulletPool.RequestObject(playerPrefab.transform.position);
     //}
+
 
     //public void OnUpdate()
     //{

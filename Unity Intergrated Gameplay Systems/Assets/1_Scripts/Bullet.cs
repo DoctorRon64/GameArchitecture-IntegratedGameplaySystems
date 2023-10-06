@@ -5,12 +5,12 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Bullet : IPoolable, IInstantiatable, ICollidable, IUpdateable
+public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateable
 {
     public bool Active { get; set; }
     public GameObject Instance { get; set; }
     public Collider2D collider { get; set; }
-    public Action<Collider2D> OnCollision { get; set; }
+    public Action<Collider2D, Bullet> OnCollision { get; set; }
 
     public Bullet(GameObject prefab, Transform _parent)
     {
@@ -47,7 +47,7 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable, IUpdateable
         {
             if (otherCollider != collider)
             {
-                OnCollision?.Invoke(otherCollider);
+                OnCollision?.Invoke(otherCollider, this);
             }
         }
     }
