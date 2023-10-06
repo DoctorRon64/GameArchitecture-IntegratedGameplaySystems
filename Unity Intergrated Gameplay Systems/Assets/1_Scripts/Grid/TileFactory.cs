@@ -4,33 +4,32 @@ using UnityEngine;
 
 public class TileFactory : IFactory<Tile, TileFlyweight>
 {
-    public Dictionary<string, TileFlyweight> Dictionary { get; set; }
-    
-    private GameObject parent;
+    public Dictionary<string, TileFlyweight> FactoryDictionary { get; set; }
+    public GameObject Parent { get; set; }
 
     public TileFactory()
     {
         //Dictionary
-        Dictionary = new Dictionary<string, TileFlyweight>();
+        FactoryDictionary = new Dictionary<string, TileFlyweight>();
         InitializeDictionary();
 
         //Parent
-        parent = new GameObject();
-        parent.name = "Tiles";
+        Parent = new GameObject();
+        Parent.name = "Tiles";
     }
 
     public void InitializeDictionary()
     {
-        Dictionary.Add("Dirt", new TileFlyweight(Resources.Load<Sprite>("Sprites/Dirt")));
-        Dictionary.Add("Stone", new TileFlyweight(Resources.Load<Sprite>("Sprites/Stone")));
-        Dictionary.Add("HardStone", new TileFlyweight(Resources.Load<Sprite>("Sprites/HardStone")));
+        FactoryDictionary.Add("Dirt", new TileFlyweight(Resources.Load<Sprite>("Sprites/Dirt")));
+        FactoryDictionary.Add("Stone", new TileFlyweight(Resources.Load<Sprite>("Sprites/Stone")));
+        FactoryDictionary.Add("HardStone", new TileFlyweight(Resources.Load<Sprite>("Sprites/HardStone")));
     }
 
     public Tile Create(string _key)
     {
-        if (Dictionary.ContainsKey(_key))
+        if (FactoryDictionary.ContainsKey(_key))
         {
-            return new Tile(Dictionary[_key].Sprite, parent.transform);
+            return new Tile(FactoryDictionary[_key].Sprite, Parent.transform);
         }
         else
         {
@@ -38,5 +37,4 @@ public class TileFactory : IFactory<Tile, TileFlyweight>
             return null;
         }
     }
-
 }

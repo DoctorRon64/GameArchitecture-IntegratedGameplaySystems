@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : IDamagable
+public class Tile : IDamagable, IInstantiatable
 {
     public Vector2Int Pos 
     {
@@ -10,13 +10,14 @@ public class Tile : IDamagable
 
         set
         {
-            instance.transform.position = new Vector3(value.x, -value.y, 0);
+            Instance.transform.position = new Vector3(value.x, -value.y, 0);
             pos = value;
         }
     }
     private Vector2Int pos;
 
-    public GameObject instance;
+    //IInstantiateble
+    public GameObject Instance { get; set; }
 
     //IDamagable
     public int Health { get; set; }
@@ -28,11 +29,11 @@ public class Tile : IDamagable
     public Tile(Sprite _sprite, Transform _parent)
     {
         //Instance
-        instance = new GameObject();
-        instance.transform.SetParent(_parent);
+        Instance = new GameObject();
+        Instance.transform.SetParent(_parent);
 
         //Renderer
-        SpriteRenderer renderer = instance.AddComponent<SpriteRenderer>();
+        SpriteRenderer renderer = Instance.AddComponent<SpriteRenderer>();
         renderer.sprite = _sprite;
     }
 

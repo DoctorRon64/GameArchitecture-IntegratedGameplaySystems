@@ -7,7 +7,8 @@ using UnityEngine;
 
 public interface IFactory<T, U>
 {
-    Dictionary<string, U> Dictionary { get; set; }
+    Dictionary<string, U> FactoryDictionary { get; set; }
+    GameObject Parent { get; set; }
     void InitializeDictionary();
-    T Create(string key);
+    T Create(string _key);
 }
