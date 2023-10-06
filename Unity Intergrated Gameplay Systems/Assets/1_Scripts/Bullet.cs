@@ -8,15 +8,14 @@ public class Bullet : IPoolable, IInstantiatable
     public bool Active { get; set; }
     public GameObject Instance { get; set; }
 
-    public Bullet(Sprite _sprite, Transform _parent)
+    public Bullet(GameObject prefab, Transform _parent)
     {
         //Instance
+        Instance = GameObject.Instantiate(prefab);
+
+        //Parent
         Instance = new GameObject();
         Instance.transform.SetParent(_parent);
-
-        //Renderer
-        SpriteRenderer renderer = Instance.AddComponent<SpriteRenderer>();
-        renderer.sprite = _sprite;
     }
 
     public void DisablePoolabe()

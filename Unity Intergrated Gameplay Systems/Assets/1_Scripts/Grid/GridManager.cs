@@ -50,7 +50,7 @@ public class GridManager : IUpdateable
     {
         if (CheckIfIsInGridBounds(_pos))
         {
-            GameObject.Destroy(grid[_pos.x, _pos.y].instance);
+            GameObject.Destroy(grid[_pos.x, _pos.y].Instance);
             grid[_pos.x, _pos.y].OnDied -= RemoveTile;
             grid[_pos.x, _pos.y] = null;
         }
