@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     //References
     private GridManager gridManager;
     private BulletManager bulletManager;
-    private InputHandler inputHandler;
+    private InputManager inputHandler;
 
     public void Awake()
     {
@@ -28,16 +28,17 @@ public class GameManager : MonoBehaviour
     {
         gridManager = new GridManager(gameSettings);
 
-        //bullet
+        //Bullet
         bulletManager = new BulletManager(gridManager, gameSettings);
         AddUpdate(bulletManager);
         AddFixedUpdate(bulletManager);
 
-        //player and input
-        inputHandler = new InputHandler();
+        //Input
+        inputHandler = new InputManager();
         AddUpdate(inputHandler);
 
-        AddFixedUpdate(new PlayerData(inputHandler));
+        //Player
+        AddFixedUpdate(new PlayerManager(inputHandler));
     }
 
     public void AddUpdate(IUpdateable script)
