@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,18 +14,23 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     private float rotateSpeed;
     private float damping;
 
+    public Action FireBullet;
+
     //Reference
     private InputManager inputHandler;
+    private BulletManager bulletManager;
     
-    public Player(GameObject prefab, InputManager _input, Transform _parent) 
+    public Player(GameObject prefab, BulletManager _bulletManager, InputManager _input, Transform _parent) 
     {
         Instance = GameObject.Instantiate(prefab);
         Instance.transform.SetParent(_parent);
 
         rb2d = Instance.GetComponent<Rigidbody2D>();
         inputHandler = _input;
+        bulletManager = _bulletManager;
 
         inputHandler.OnLeftMouseButton += FireGun;
+        FireBullet += bulletManager.ReleaseBullet;
 
         moveSpeed = 5f;
         rotateSpeed = 2f;
@@ -48,7 +54,7 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
 
     private void FireGun()
     {
-
+        FireBullet?.Invoke();
     }
 
     //IDamagable
@@ -60,6 +66,6 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
 
     public void Die()
     {
-
+        //PlayerDie
     }
 }
