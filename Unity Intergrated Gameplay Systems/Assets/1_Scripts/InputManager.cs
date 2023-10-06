@@ -7,7 +7,7 @@ public class InputManager : IUpdateable
 {
     public Action OnLeftMouseButton;
 
-    [SerializeField] private KeyCode shootButton;
+    [SerializeField] private KeyCode shootButton = KeyCode.F;
     public float HorizontalInput;
     public float VerticalInput;
 
@@ -18,12 +18,11 @@ public class InputManager : IUpdateable
         UpdateButton();
     }
     
-    public bool UpdateButton()
+    public void UpdateButton()
     {
         if (Input.GetKey(shootButton))
         {
-            return true;
+            OnLeftMouseButton?.Invoke();
         }
-        return false;
     }
 }

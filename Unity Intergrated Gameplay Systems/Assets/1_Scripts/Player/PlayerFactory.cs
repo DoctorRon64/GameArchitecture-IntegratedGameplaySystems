@@ -9,10 +9,12 @@ public class PlayerFactory : IFactory<Player, GameObject>
 
     //References
     private InputManager inputManager;
+    private BulletManager bulletManager;
 
-    public PlayerFactory(InputManager _inputManager)
+    public PlayerFactory(InputManager _inputManager, BulletManager _bulletManager)
     {
         inputManager = _inputManager;
+        bulletManager = _bulletManager;
 
         //Dictionary
         FactoryDictionary = new Dictionary<string, GameObject>();  
@@ -32,7 +34,7 @@ public class PlayerFactory : IFactory<Player, GameObject>
     {
         if (FactoryDictionary.ContainsKey(_key))
         {
-            return new Player(FactoryDictionary[_key], inputManager, Parent.transform);
+            return new Player(FactoryDictionary[_key], bulletManager, inputManager, Parent.transform);
         }
         else
         {

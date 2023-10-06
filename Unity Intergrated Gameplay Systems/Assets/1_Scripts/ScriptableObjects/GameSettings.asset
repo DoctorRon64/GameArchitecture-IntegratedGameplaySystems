@@ -23,5 +23,5 @@ MonoBehaviour:
     MaxHealth: 50
   hardStone:
     MaxHealth: 100
-  bulletPoolSize: 10
+  bulletPoolSize: 45
   bulletDamage: 10

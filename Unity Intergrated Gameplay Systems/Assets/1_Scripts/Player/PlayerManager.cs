@@ -5,14 +5,19 @@ using UnityEngine;
 public class PlayerManager : IFixedUpdateable
 {
     private PlayerFactory playerFactory;
-    private Player player;
+    public Player player;
 
-    public PlayerManager(InputManager inputManager)
+    public PlayerManager(InputManager inputManager, BulletManager bulletManager)
     {
-        playerFactory = new PlayerFactory(inputManager);
+        playerFactory = new PlayerFactory(inputManager, bulletManager);
 
         player = playerFactory.Create("Player");
     }
+
+    /*public Player ReturnPlayer()
+    {
+        return player;
+    }*/
 
     public void OnFixedUpdate()
     {

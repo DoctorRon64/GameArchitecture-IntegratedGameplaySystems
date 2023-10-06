@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class GameManager : MonoBehaviour
     //References
     private GridManager gridManager;
     private BulletManager bulletManager;
-    private InputManager inputHandler;
+    private InputManager inputManager;
+
+    [Header("Cinemachine")]
+    public new CinemachineVirtualCamera camera;
 
     public void Awake()
     {
@@ -34,11 +38,16 @@ public class GameManager : MonoBehaviour
         AddFixedUpdate(bulletManager);
 
         //Input
-        inputHandler = new InputManager();
-        AddUpdate(inputHandler);
+        inputManager = new InputManager();
+        AddUpdate(inputManager);
 
         //Player
-        AddFixedUpdate(new PlayerManager(inputHandler));
+        PlayerManager playerManager = new PlayerManager(inputManager, bulletManager);
+        AddFixedUpdate(playerManager);
+
+        /*Player player = playerManager.ReturnPlayer();
+        if (player == null) { Debug.Log("error no player");  }
+        camera.Follow = player.transform;*/
     }
 
     public void AddUpdate(IUpdateable script)
