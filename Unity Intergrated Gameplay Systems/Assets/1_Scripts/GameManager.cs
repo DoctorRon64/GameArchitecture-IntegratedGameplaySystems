@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
 
     //References
-    GridManager gridManager;
-    BulletManager bulletManager;
+    private GridManager gridManager;
+    private BulletManager bulletManager;
+    private InputHandler inputHandler;
 
     public void Awake()
     {
@@ -27,18 +28,26 @@ public class GameManager : MonoBehaviour
     {
         gridManager = new GridManager(gameSettings);
 
+        //bullet
         bulletManager = new BulletManager(gridManager, gameSettings);
-        Add(bulletManager);
+        AddUpdate(bulletManager);
+        AddFixedUpdate(bulletManager);
+
+        //player and input
+        inputHandler = new InputHandler();
+        AddUpdate(inputHandler);
+
+        AddFixedUpdate(new PlayerData(inputHandler));
     }
 
-    public void Add(IUpdateable script)
+    public void AddUpdate(IUpdateable script)
     {
         updateables.Add(script);
+    }
 
-        if (script is IFixedUpdateable)
-        {
-            fixedUpdateables.Add(script as IFixedUpdateable);
-        }
+    public void AddFixedUpdate(IFixedUpdateable script)
+    {
+        fixedUpdateables.Add(script);
     }
 
     public void Remove(IUpdateable script)

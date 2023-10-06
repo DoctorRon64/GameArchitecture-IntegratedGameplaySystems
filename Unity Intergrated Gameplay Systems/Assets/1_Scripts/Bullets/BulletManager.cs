@@ -40,11 +40,13 @@ public class BulletManager : IUpdateable, IFixedUpdateable
 
     public void OnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Bullet bullet = bulletPool.RequestObject(Vector2.zero);
-            bullet.OnCollision += OnBulletCollision;
-        }
+        
+    }
+
+    public void ReleaseBullet()
+    {
+        Bullet bullet = bulletPool.RequestObject(Vector2.zero);
+        bullet.OnCollision += OnBulletCollision;
     }
 
     public void OnBulletCollision(Collider2D other, Bullet _instance)
@@ -68,21 +70,4 @@ public class BulletManager : IUpdateable, IFixedUpdateable
         bulletPool.DeactivateItem(_instance);
         _instance.OnCollision -= OnBulletCollision;
     }
-
-    //private void HandleFireGun()
-    //{
-    //    bulletPool.RequestObject(playerPrefab.transform.position);
-    //}
-
-
-    //public void OnUpdate()
-    //{
-    //    playerPrefab.GetComponent<PlayerData>().OnUpdate();
-    //    bulletPool.UpdateItem();
-    //}
-
-    //public void OnFixedUpdate()
-    //{
-    //    playerPrefab.GetComponent<PlayerData>().OnFixedUpdate();
-    //}
 }
