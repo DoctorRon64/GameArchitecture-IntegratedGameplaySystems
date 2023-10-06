@@ -8,6 +8,8 @@ public class ObjectManager : IUpdateable, IFixedUpdateable
     private ObjectPool<Bullet> bulletPool;
     private BulletFactory bulletFactory;
 
+
+
     public ObjectManager()
     {
         bulletFactory = new BulletFactory();
@@ -17,17 +19,35 @@ public class ObjectManager : IUpdateable, IFixedUpdateable
         {
             Bullet newBullet = bulletFactory.Create("Bullet");
             bulletPool.DeactivateItem(newBullet);
-
-            Debug.Log(newBullet);
+            newBullet.OnCollision += OnBulletCollsion;
         }
     }
 
     public void OnFixedUpdate()
     {
+
+
+        bulletPool.UpdateItem();
     }
 
     public void OnUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            bulletPool.RequestObject(Vector2.zero);
+        }
+    }
+
+    public void OnBulletCollsion(Collider2D other)
+    {
+        Debug.Log(other.gameObject + "collides");
+
+        IDamagable Damagable = other.GetComponent<IDamagable>();
+
+        if (Damagable != null)
+        {
+            Damagable.TakeDamage(100);
+        }
     }
 
     //private void HandleFireGun()

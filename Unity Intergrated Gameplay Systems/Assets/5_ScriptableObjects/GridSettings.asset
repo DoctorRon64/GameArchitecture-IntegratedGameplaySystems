@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Size: {x: 100, y: 100}
   PlanetRadius: 50
-  DirtPercentage: 1
-  StonePercentage: 98
-  HardStonePercentage: 1
+  DirtPercentage: 50
+  StonePercentage: 35
+  HardStonePercentage: 15
   dirt:
     MaxHealth: 20
   stone:

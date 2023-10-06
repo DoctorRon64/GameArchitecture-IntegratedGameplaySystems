@@ -35,11 +35,15 @@ public class Tile : IDamagable, IInstantiatable
         //Renderer
         SpriteRenderer renderer = Instance.AddComponent<SpriteRenderer>();
         renderer.sprite = _sprite;
+
+        Instance.AddComponent<BoxCollider2D>();
     }
 
     //IDamagable
     public void TakeDamage(int _damageAmount)
     {
+        Debug.Log(_damageAmount + Health + MaxHealth);
+
         Health -= _damageAmount;
 
         if (Health <= 0)
@@ -50,6 +54,8 @@ public class Tile : IDamagable, IInstantiatable
 
     public void Die()
     {
+        Debug.Log(this + "DIEEEE!!!!@");
+        
         OnDied(pos);
     }
 }
