@@ -4,20 +4,40 @@ using UnityEngine;
 
 public class ObjectManager : IUpdateable, IFixedUpdateable
 {
-    private ObjectsInScene objectsInScene;
+    private GameObject playerPrefab;
+    private GameObject bulletPrefab;
+    private ObjectPool<Bullet> bulletPool;
+    [SerializeField] private int maxBulletAmount;
 
-    public ObjectManager(ObjectsInScene _allObjects)
+
+    public ObjectManager(GameObject _player, GameObject _bullet)
     {
-        objectsInScene = _allObjects;
+        playerPrefab = _player;
+        bulletPrefab = _bullet;
+
+        bulletPool = new ObjectPool<Bullet>();
+        playerPrefab.GetComponent<PlayerData>().OnFireGun += HandleFireGun;
+
+        for (int i = 0; i < maxBulletAmount; i++)
+        {
+            GameObject newBullet = Object.Instantiate(bulletPrefab);
+            bulletPool.DeactivateItem(newBullet.GetComponent<Bullet>());
+        }
     }
-    
+
+    private void HandleFireGun()
+    {
+        bulletPool.RequestObject(playerPrefab.transform.position);
+    }
+
     public void OnUpdate()
     {
-        objectsInScene.player.OnUpdate();
+        playerPrefab.GetComponent<PlayerData>().OnUpdate();
+        bulletPool.UpdateItem();
     }
 
     public void OnFixedUpdate()
     {
-        objectsInScene.player.OnFixedUpdate();
+        playerPrefab.GetComponent<PlayerData>().OnFixedUpdate();
     }
 }

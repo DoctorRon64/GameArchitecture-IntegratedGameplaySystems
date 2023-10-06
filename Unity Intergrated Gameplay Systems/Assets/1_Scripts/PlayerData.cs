@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,14 +11,13 @@ public class PlayerData : IDamagable, IUpdateable, IFixedUpdateable
     private float damping;
 
     private InputHandler input;
-    private ObjectPool<Bullet> objectPool;
- 
+    public Action OnFireGun;
+
     public int Health { get; set; }
     public int MaxHealth { get; set; }
     public PlayerData() 
     {
         input = new InputHandler();
-        objectPool = new ObjectPool<Bullet>();
         moveSpeed = 5f;
         rotateSpeed = 2f;
         damping = 0.7f;
@@ -41,7 +41,6 @@ public class PlayerData : IDamagable, IUpdateable, IFixedUpdateable
     public void OnUpdate()
     {
         input.OnUpdate();
-        objectPool.UpdateItem();
 
         if (input.UpdateButton())
         {
@@ -51,9 +50,8 @@ public class PlayerData : IDamagable, IUpdateable, IFixedUpdateable
     
     private void FireGun()
     {
-        objectPool.RequestObject(Vector2.zero);
+        OnFireGun?.Invoke();
     }
-
 
     public void TakeDamage(int amount)
     {
