@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0b5eeb8b93e05c49ac7fc85e10e78c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 89e1f60d6f149c44cac6f5453c2c5882, type: 3}
   m_Name: GridSettings
   m_EditorClassIdentifier: 
   Size: {x: 100, y: 100}
   PlanetRadius: 50
-  DirtPercentage: 20
-  StonePercentage: 50
-  HardStonePercentage: 30
+  DirtPercentage: 1
+  StonePercentage: 98
+  HardStonePercentage: 1
   dirt:
-    MaxHealth: 5
+    MaxHealth: 20
   stone:
-    MaxHealth: 25
+    MaxHealth: 20
   hardStone:
-    MaxHealth: 50
+    MaxHealth: 20

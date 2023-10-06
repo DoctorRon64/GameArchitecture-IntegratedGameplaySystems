@@ -14,7 +14,6 @@ public class Bullet : IPoolable, IInstantiatable
         Instance = GameObject.Instantiate(prefab);
 
         //Parent
-        Instance = new GameObject();
         Instance.transform.SetParent(_parent);
     }
 
