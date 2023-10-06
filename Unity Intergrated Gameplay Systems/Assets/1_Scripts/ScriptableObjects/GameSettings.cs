@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GridSettings", menuName = "ScriptableObject/GridSettings")]
-public class GridSettings : ScriptableObject
+[CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObject/GameSettings")]
+public class GameSettings : ScriptableObject
 {
     [Header("Grid Settings")]
     public Vector2Int Size;
@@ -18,4 +18,8 @@ public class GridSettings : ScriptableObject
     public TileSettings dirt;
     public TileSettings stone;
     public TileSettings hardStone;
+
+    [Header("Bullet Settings")]
+    public int bulletPoolSize;
+    public int bulletDamage;
 }

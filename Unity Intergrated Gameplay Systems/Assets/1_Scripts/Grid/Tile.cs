@@ -26,24 +26,27 @@ public class Tile : IDamagable, IInstantiatable
     public delegate void TileDied(Vector2Int pos);
     public event TileDied OnDied;
 
-    public Tile(Sprite _sprite, Transform _parent)
+    public Tile(Sprite _sprite, Transform _parent, int _maxHealth)
     {
         //Instance
         Instance = new GameObject();
         Instance.transform.SetParent(_parent);
 
-        //Renderer
         SpriteRenderer renderer = Instance.AddComponent<SpriteRenderer>();
         renderer.sprite = _sprite;
 
-        Instance.AddComponent<BoxCollider2D>();
+        BoxCollider2D collider = Instance.AddComponent<BoxCollider2D>();
+        collider.size = new Vector2(1, 1);
+
+        Instance.layer = LayerMask.NameToLayer("TileLayer");
+
+        MaxHealth = _maxHealth;
+        Health = MaxHealth;
     }
 
     //IDamagable
     public void TakeDamage(int _damageAmount)
     {
-        Debug.Log(_damageAmount + Health + MaxHealth);
-
         Health -= _damageAmount;
 
         if (Health <= 0)
@@ -54,8 +57,6 @@ public class Tile : IDamagable, IInstantiatable
 
     public void Die()
     {
-        Debug.Log(this + "DIEEEE!!!!@");
-        
         OnDied(pos);
     }
 }

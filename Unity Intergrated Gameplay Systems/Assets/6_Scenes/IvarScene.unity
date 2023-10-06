@@ -248,7 +248,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1661537752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd29751212458dc468e290ef3fa84607, type: 3}
+  m_Script: {fileID: 11500000, guid: 1db01e5bd45e97141a90414bc046ec42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSettings: {fileID: 11400000, guid: c44fb4b055c8d494e9c36b736a6da895, type: 2}
+  gameSettings: {fileID: 11400000, guid: cbe4276f73ea0fa4bb12258c94d32c52, type: 2}
