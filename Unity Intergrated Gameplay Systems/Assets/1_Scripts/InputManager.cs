@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputHandler : IUpdateable
+public class InputManager : IUpdateable
 {
     public Action OnLeftMouseButton;
 
