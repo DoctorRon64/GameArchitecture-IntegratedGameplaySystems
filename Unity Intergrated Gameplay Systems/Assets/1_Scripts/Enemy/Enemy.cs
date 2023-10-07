@@ -55,11 +55,11 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable, ICollidable<
 
         if (Health <= 0)
         {
-            Die();
+            OnDie();
         }
     }
 
-    public void Die()
+    public void OnDie()
     {
         OnDied(this);
     }

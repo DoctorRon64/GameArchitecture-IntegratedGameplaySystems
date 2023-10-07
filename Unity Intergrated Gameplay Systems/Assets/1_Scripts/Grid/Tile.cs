@@ -49,11 +49,11 @@ public class Tile : IDamagable, IInstantiatable
 
         if (Health <= 0)
         {
-            Die();
+            OnDie();
         }
     }
 
-    public void Die()
+    public void OnDie()
     {
         OnDied(pos);
     }

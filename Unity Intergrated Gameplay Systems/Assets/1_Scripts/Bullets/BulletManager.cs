@@ -77,7 +77,10 @@ public class BulletManager : IUpdateable, IFixedUpdateable
             currentEnemy.TakeDamage(gameSettings.BulletDamage);
         }
 
-        bulletPool.DeactivateItem(_instance);
-        _instance.OnCollision -= OnBulletCollision;
+        if (other.gameObject.layer != LayerMask.NameToLayer("Bullet"))
+        {
+            bulletPool.DeactivateItem(_instance);
+            _instance.OnCollision -= OnBulletCollision;
+        }
     }
 }

@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         //set cinemachine camera to player
         Player player = playerManager.GetPlayer();
         camera.Follow = player.Instance.transform;
+
+        player.OnDiePlayer += sceneManagerObject.LoadScene;
     }
 
     public void AddUpdate(IUpdateable script)

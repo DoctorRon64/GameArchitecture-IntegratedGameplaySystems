@@ -14,7 +14,7 @@ TagManager:
   - TileLayer
   - PlayerLayer
   - EnemyLayer
-  - 
+  - Bullet
   - 
   - 
   - 
