@@ -33,3 +33,5 @@ MonoBehaviour:
   EnemySpawnChance: 8
   EnemyDamage: 10
   PlayerHealth: 100
+  EnemyKillScore: 100
+  TileKillScore: 5

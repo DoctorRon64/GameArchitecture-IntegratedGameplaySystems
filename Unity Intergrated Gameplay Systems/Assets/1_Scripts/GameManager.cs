@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
         AddUpdate(inputManager);
 
         //Enemys
-        EnemyManager enemyManager = new EnemyManager(gameSettings);
+        EnemyManager enemyManager = new EnemyManager(gameSettings, this);
         AddFixedUpdate(enemyManager);
 
-        gridManager = new GridManager(gameSettings, enemyManager);
+        gridManager = new GridManager(gameSettings, enemyManager, this);
 
         //Bullet
         bulletManager = new BulletManager(gridManager, gameSettings, enemyManager);
