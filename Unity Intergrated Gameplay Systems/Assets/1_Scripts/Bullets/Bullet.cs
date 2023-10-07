@@ -56,4 +56,9 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
     {
         CheckCollisions();
     }
+
+    public void SetPosition(Vector2 _pos)
+    {
+        Instance.transform.position = _pos;
+    }
 }

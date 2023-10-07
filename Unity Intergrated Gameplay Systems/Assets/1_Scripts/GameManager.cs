@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,9 +46,9 @@ public class GameManager : MonoBehaviour
         PlayerManager playerManager = new PlayerManager(inputManager, bulletManager);
         AddFixedUpdate(playerManager);
 
-        /*Player player = playerManager.ReturnPlayer();
-        if (player == null) { Debug.Log("error no player");  }
-        camera.Follow = player.transform;*/
+        //set cinemachine camera to player
+        Player player = playerManager.ReturnPlayer();
+        camera.Follow = player.Instance.transform;
     }
 
     public void AddUpdate(IUpdateable script)
@@ -84,5 +85,10 @@ public class GameManager : MonoBehaviour
         {
             iFixedUpdateble.OnFixedUpdate();
         }
+    }
+
+    public void GotoNextScene(string _sceneName)
+    {
+        SceneManager.LoadScene(_sceneName);
     }
 }

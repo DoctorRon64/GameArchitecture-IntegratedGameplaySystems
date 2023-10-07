@@ -20,6 +20,7 @@ public class ObjectPool<T> where T : IPoolable
         else
         {
 			T curPool = inactivePool[0];
+            curPool.SetPosition(_pos);
 			ActivateItem(curPool);
 			return curPool;
 		}

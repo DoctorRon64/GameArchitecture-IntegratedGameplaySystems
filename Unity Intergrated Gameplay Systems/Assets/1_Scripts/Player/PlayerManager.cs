@@ -14,10 +14,10 @@ public class PlayerManager : IFixedUpdateable
         player = playerFactory.Create("Player");
     }
 
-    /*public Player ReturnPlayer()
+    public Player ReturnPlayer()
     {
         return player;
-    }*/
+    }
 
     public void OnFixedUpdate()
     {
