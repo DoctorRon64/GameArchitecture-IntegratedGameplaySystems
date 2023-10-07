@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   Size: {x: 100, y: 100}
-  PlanetRadius: 50
+  PlanetRadius: 40
   DirtPercentage: 20
   StonePercentage: 50
   HardStonePercentage: 30
@@ -23,7 +23,7 @@ MonoBehaviour:
     MaxHealth: 20
   HardStone:
     MaxHealth: 40
-  BulletPoolSize: 20
+  BulletPoolSize: 30
   BulletDamage: 10
   bulletSpeed: 5
   ShootCooldown: 0.1
@@ -33,5 +33,5 @@ MonoBehaviour:
   EnemySpawnChance: 8
   EnemyDamage: 10
   PlayerHealth: 100
-  EnemyKillScore: 100
+  EnemyKillScore: 50
   TileKillScore: 5

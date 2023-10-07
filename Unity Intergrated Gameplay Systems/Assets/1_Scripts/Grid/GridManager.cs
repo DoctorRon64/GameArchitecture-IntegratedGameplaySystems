@@ -76,7 +76,7 @@ public class GridManager
     {
         if (CheckIfIsInGridBounds(_pos))
         {
-            gameManager.AddScore(gameSettings.TileKillScore);
+            gameManager.Score += gameSettings.TileKillScore;
             RemoveTile(_pos);
         }
         else
