@@ -3,30 +3,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine
+public class StateMachine<T>
 {
-    public IState currentState;
+    public IState<T> currentState;
 
-    private Dictionary<System.Type, IState> statesDict = new Dictionary<System.Type, IState>();
+    private Dictionary<string, IState<T>> statesDict = new Dictionary<string, IState<T>>();
+    public T Owner { get; private set; }
 
-    public void AddStates(System.Type startingState, IState[] states)
+    public StateMachine(T _owner)
     {
-        foreach (IState state in states)
-        {
-            statesDict.Add(state.GetType(), state);
-        }
-
-        SwitchState(startingState);
+        Owner = _owner;
     }
 
-    public void SwitchState(System.Type newState)
+    public void AddState(string _stateType, IState<T> _stateInstance)
     {
-        if (currentState != statesDict[newState])
+        if (!CheckIfContainsState(_stateInstance))
         {
-            currentState?.OnExit();
-            currentState = statesDict[newState];
-            currentState?.OnStart();
+            statesDict.Add(_stateType, _stateInstance);
+            _stateInstance.SetOwner(Owner);
         }
+    }
+
+    public void SwitchState(string _newState)
+    {
+        if (CheckIfContainsState(_newState))
+        {
+            if (currentState != statesDict[_newState])
+            {
+                currentState?.OnExit();
+                currentState = statesDict[_newState];
+                currentState?.OnStart();
+            }
+        }
+    }
+
+    public bool CheckIfContainsState(IState<T> _state)
+    {
+        if (statesDict.ContainsValue(_state))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool CheckIfContainsState(string _state)
+    {
+        if (statesDict.ContainsKey(_state))
+        {
+            return true;
+        }
+        Debug.LogError("Couldn't find " + _state + " in " + this.ToString());
+        return false;
     }
 
     public void OnUpdate()

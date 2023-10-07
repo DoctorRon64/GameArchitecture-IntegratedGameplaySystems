@@ -38,7 +38,7 @@ public class PlayerFactory : IFactory<Player, GameObject>
         }
         else
         {
-            Debug.LogError("TileFactory Create: key " + _key + " doesn't exist");
+            Debug.LogError("PlayerFactory Create: key " + _key + " doesn't exist");
             return null;
         }
     }

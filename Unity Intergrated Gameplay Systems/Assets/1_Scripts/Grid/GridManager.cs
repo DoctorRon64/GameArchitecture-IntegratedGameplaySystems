@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build.Content;
 using UnityEngine;
-using UnityEngine.tvOS;
 
 [System.Serializable]
 public class GridManager
@@ -12,9 +10,11 @@ public class GridManager
 
     //References
     private GameSettings gameSettings;
+    private EnemyManager enemyManager;
 
-    public GridManager(GameSettings _gameSettings)
+    public GridManager(GameSettings _gameSettings, EnemyManager _enemyManager)
     {
+        enemyManager = _enemyManager;
         gameSettings = _gameSettings;
         grid = new Tile[gameSettings.Size.x, gameSettings.Size.y];
         tileFactory = new TileFactory(gameSettings);
@@ -46,6 +46,7 @@ public class GridManager
             grid[_pos.x, _pos.y] = tileFactory.Create(_tileType);
             grid[_pos.x, _pos.y].Pos = _pos;
             grid[_pos.x, _pos.y].OnDied += RemoveTile;
+            grid[_pos.x, _pos.y].OnDied += MaybeSummonEnemy;
         }
         else
         {
@@ -59,11 +60,22 @@ public class GridManager
         {
             GameObject.Destroy(grid[_pos.x, _pos.y].Instance);
             grid[_pos.x, _pos.y].OnDied -= RemoveTile;
+            grid[_pos.x, _pos.y].OnDied -= MaybeSummonEnemy;
             grid[_pos.x, _pos.y] = null;
         }
         else
         {
             Debug.LogError("RemoveTile: " + _pos.x + ", " + _pos.y + " Is out of bounds");
+        }
+    }
+
+    private void MaybeSummonEnemy(Vector2Int _pos)
+    {
+        int randomInt = Random.Range(1, 100);
+
+        if (randomInt <= gameSettings.EnemySpawnChance)
+        {
+            enemyManager.AddEnemy("Enemy", new Vector2(0, 0));
         }
     }
 
@@ -107,8 +119,6 @@ public class GridManager
                 }
             }
         }
-
-        //TODO add some randomness
     }
 
     private bool CheckIfIsInGridBounds(Vector2Int _pos)

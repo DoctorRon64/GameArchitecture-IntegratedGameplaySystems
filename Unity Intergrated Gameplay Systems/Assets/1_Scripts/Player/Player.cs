@@ -20,10 +20,9 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     private InputManager inputHandler;
     private BulletManager bulletManager;
     
-    public Player(GameObject prefab, BulletManager _bulletManager, InputManager _input, Transform _parent) 
+    public Player(GameObject _prefab, BulletManager _bulletManager, InputManager _input, Transform _parent) 
     {
-        Instance = GameObject.Instantiate(prefab);
-        Instance.transform.SetParent(_parent);
+        Instantiate(_prefab, _parent);
 
         rb2d = Instance.GetComponent<Rigidbody2D>();
         inputHandler = _input;
@@ -35,6 +34,12 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         moveSpeed = 5f;
         rotateSpeed = 2f;
         damping = 0.7f;
+    }
+
+    public void Instantiate(GameObject _prefab, Transform _parent)
+    {
+        Instance = GameObject.Instantiate(_prefab);
+        Instance.transform.SetParent(_parent);
     }
 
     public void OnFixedUpdate()

@@ -19,7 +19,7 @@ public class BulletManager : IUpdateable, IFixedUpdateable
         bulletPool = new ObjectPool<Bullet>();
         gridManager = _gridManager;
         gameSettings = _gameSettings;
-        bulletPoolSize = gameSettings.bulletPoolSize;
+        bulletPoolSize = gameSettings.BulletPoolSize;
 
         if (bulletPoolSize <= 0)
         {
@@ -59,7 +59,7 @@ public class BulletManager : IUpdateable, IFixedUpdateable
 
             if (otherTile != null)
             {
-                otherTile.TakeDamage(gameSettings.bulletDamage);
+                otherTile.TakeDamage(gameSettings.BulletDamage);
             }
             else
             {

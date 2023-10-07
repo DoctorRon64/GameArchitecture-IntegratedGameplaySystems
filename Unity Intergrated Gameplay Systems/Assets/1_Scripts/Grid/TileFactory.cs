@@ -25,16 +25,16 @@ public class TileFactory : IFactory<Tile, TileFlyweight>
 
     public void InitializeDictionary()
     {
-        FactoryDictionary.Add("Dirt", new TileFlyweight(Resources.Load<Sprite>("Sprites/Dirt"), gameSettings.dirt.MaxHealth));
-        FactoryDictionary.Add("Stone", new TileFlyweight(Resources.Load<Sprite>("Sprites/Stone"), gameSettings.stone.MaxHealth));
-        FactoryDictionary.Add("HardStone", new TileFlyweight(Resources.Load<Sprite>("Sprites/HardStone"), gameSettings.hardStone.MaxHealth));
+        FactoryDictionary.Add("Dirt", new TileFlyweight(Resources.Load<GameObject>("Prefabs/Dirt"), gameSettings.Dirt.MaxHealth));
+        FactoryDictionary.Add("Stone", new TileFlyweight(Resources.Load<GameObject>("Prefabs/Stone"), gameSettings.Stone.MaxHealth));
+        FactoryDictionary.Add("HardStone", new TileFlyweight(Resources.Load<GameObject>("Prefabs/HardStone"), gameSettings.HardStone.MaxHealth));
     }
 
     public Tile Create(string _key)
     {
         if (FactoryDictionary.ContainsKey(_key))
         {
-            return new Tile(FactoryDictionary[_key].Sprite, Parent.transform, FactoryDictionary[_key].MaxHealth);
+            return new Tile(FactoryDictionary[_key].Prefab, Parent.transform, FactoryDictionary[_key].MaxHealth);
         }
         else
         {

@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateable
@@ -12,16 +10,18 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
     public Collider2D collider { get; set; }
     public Action<Collider2D, Bullet> OnCollision { get; set; }
 
-    public Bullet(GameObject prefab, Transform _parent)
+    public Bullet(GameObject _prefab, Transform _parent)
     {
-        //Instance
-        Instance = GameObject.Instantiate(prefab);
-
-        //Parent
-        Instance.transform.SetParent(_parent);
+        Instantiate(_prefab, _parent);
 
         //collider
         collider = Instance.GetComponent<Collider2D>();
+    }
+
+    public void Instantiate(GameObject _prefab, Transform _parent)
+    {
+        Instance = GameObject.Instantiate(_prefab);
+        Instance.transform.SetParent(_parent);
     }
 
     public void DisablePoolabe()

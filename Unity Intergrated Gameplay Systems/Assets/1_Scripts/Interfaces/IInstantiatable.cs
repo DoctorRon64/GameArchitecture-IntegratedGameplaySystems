@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IInstantiatable
 {
     public GameObject Instance { get; set; }
+
+    public void Instantiate(GameObject _prefab, Transform _parent);
 }
