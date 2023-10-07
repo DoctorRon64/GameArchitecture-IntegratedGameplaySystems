@@ -32,6 +32,10 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        //Input
+        inputManager = new InputManager();
+        AddUpdate(inputManager);
+
         //Enemys
         EnemyManager enemyManager = new EnemyManager(gameSettings);
         AddFixedUpdate(enemyManager);
@@ -43,16 +47,14 @@ public class GameManager : MonoBehaviour
         AddUpdate(bulletManager);
         AddFixedUpdate(bulletManager);
 
-        //Input
-        inputManager = new InputManager();
-        AddUpdate(inputManager);
-
         //Player
         PlayerManager playerManager = new PlayerManager(inputManager, bulletManager, gameSettings);
         AddFixedUpdate(playerManager);
+        enemyManager.AddPlayerManager(playerManager);
+
 
         //set cinemachine camera to player
-        Player player = playerManager.ReturnPlayer();
+        Player player = playerManager.GetPlayer();
         camera.Follow = player.Instance.transform;
     }
 

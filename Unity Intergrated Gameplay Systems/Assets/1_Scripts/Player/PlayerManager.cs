@@ -15,7 +15,7 @@ public class PlayerManager : IFixedUpdateable
         player.Instance.transform.position = new Vector3(5, -5, 0);
     }
 
-    public Player ReturnPlayer()
+    public Player GetPlayer()
     {
         return player;
     }

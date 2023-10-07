@@ -37,6 +37,9 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         inputHandler.OnLeftMouseButton += FireGun;
         FireBullet += bulletManager.FireBullet;
 
+        MaxHealth = gameSettings.PlayerHealth;
+        Health = MaxHealth;
+
         moveSpeed = 5f;
         rotateSpeed = 2f;
         damping = 0.7f;   
@@ -119,6 +122,6 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
 
     public void Die()
     {
-        //PlayerDie
+        Debug.Log("Game Over!! (Player Died)");
     }
 }

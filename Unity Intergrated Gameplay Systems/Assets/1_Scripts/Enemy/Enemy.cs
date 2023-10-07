@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
+public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable, ICollidable<Enemy>
 {
     public int Health { get; set; }
     public int MaxHealth { get; set; }
@@ -10,6 +11,8 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
     public StateMachine<Enemy> movementFSM { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
     public GameSettings GameSettings { get; private set; }
+    public Collider2D collider { get; set; }
+    public Action<Collider2D, Enemy> OnCollision { get; set; }
 
     public delegate void EnemyDied(Enemy enemy);
     public event EnemyDied OnDied;
@@ -22,6 +25,7 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
         Instantiate(_prefab, _parent);
         Instance.layer = LayerMask.NameToLayer("EnemyLayer");
         Rigidbody = Instance.GetComponent<Rigidbody2D>();
+        collider = Instance.GetComponent<Collider2D>();
 
         MaxHealth = GameSettings.EnemyHealth;
         Health = MaxHealth;
@@ -42,6 +46,7 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
     public void OnFixedUpdate()
     {
         movementFSM.OnUpdate();
+        CheckCollisions();
     }
 
     public void TakeDamage(int _amount)
@@ -57,5 +62,18 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
     public void Die()
     {
         OnDied(this);
+    }
+
+    public void CheckCollisions()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(collider.bounds.center, 1);
+
+        foreach (Collider2D otherCollider in colliders)
+        {
+            if (otherCollider != collider)
+            {
+                OnCollision?.Invoke(otherCollider, this);
+            }
+        }
     }
 }

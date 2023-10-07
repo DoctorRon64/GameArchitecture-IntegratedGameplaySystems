@@ -30,4 +30,8 @@ public class GameSettings : ScriptableObject
     public float EnemySpeed;
     public int EnemyHealth;
     public int EnemySpawnChance;
+    public int EnemyDamage;
+
+    [Header("Player Settings")]
+    public int PlayerHealth;
 }

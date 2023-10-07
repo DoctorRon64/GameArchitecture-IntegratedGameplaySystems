@@ -31,3 +31,5 @@ MonoBehaviour:
   EnemySpeed: 15
   EnemyHealth: 100
   EnemySpawnChance: 8
+  EnemyDamage: 10
+  PlayerHealth: 100
