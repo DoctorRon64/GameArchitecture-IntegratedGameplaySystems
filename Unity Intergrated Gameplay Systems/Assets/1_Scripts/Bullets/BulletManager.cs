@@ -43,9 +43,9 @@ public class BulletManager : IUpdateable, IFixedUpdateable
         
     }
 
-    public void ReleaseBullet()
+    public void FireBulletOutofObjectPool(Vector2 _pos)
     {
-        Bullet bullet = bulletPool.RequestObject(Vector2.zero);
+        Bullet bullet = bulletPool.RequestObject(_pos);
         bullet.OnCollision += OnBulletCollision;
     }
 

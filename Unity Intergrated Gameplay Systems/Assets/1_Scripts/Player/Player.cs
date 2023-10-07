@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class Player : IDamagable, IFixedUpdateable, IInstantiatable
@@ -14,7 +15,10 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     private float rotateSpeed;
     private float damping;
 
-    public Action FireBullet;
+
+    private float bulletFromPlayerDistance = 2f;
+    private Vector2 bulletPoint;
+    public Action<Vector2> FireBullet;
 
     //Reference
     private InputManager inputHandler;
@@ -29,11 +33,11 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         bulletManager = _bulletManager;
 
         inputHandler.OnLeftMouseButton += FireGun;
-        FireBullet += bulletManager.ReleaseBullet;
+        FireBullet += bulletManager.FireBulletOutofObjectPool;
 
         moveSpeed = 5f;
         rotateSpeed = 2f;
-        damping = 0.7f;
+        damping = 0.7f;   
     }
 
     public void Instantiate(GameObject _prefab, Transform _parent)
@@ -43,6 +47,11 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     }
 
     public void OnFixedUpdate()
+    {
+        MovePlayer();
+    }
+
+    private void MovePlayer()
     {
         Vector2 moveDirection = new Vector2(inputHandler.HorizontalInput, inputHandler.VerticalInput).normalized;
 
@@ -57,12 +66,41 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, 1 - damping);
     }
 
-    private void FireGun()
+    private void RotatePlayer()
     {
-        FireBullet?.Invoke();
+
     }
 
-    //IDamagable
+    private void FireGun()
+    {
+        bulletPoint = RotateBulletPoint();
+
+        FireBullet?.Invoke(bulletPoint);
+    }
+
+    private Vector2 RotateBulletPoint()
+    {
+        Debug.Log(Instance.transform.position);
+
+        //bereken hoek
+        Vector3 mousePosition = Input.mousePosition;
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 DeltaVector = worldMousePosition - Instance.transform.position;
+        float angle = MathF.Atan2(DeltaVector.x, DeltaVector.y);
+        
+        Debug.Log(angle);
+
+        Vector2 circlePoint = CalculatePointOnCircle(Instance.transform.position, bulletFromPlayerDistance, angle);
+        return circlePoint;
+    }
+
+    Vector2 CalculatePointOnCircle(Vector2 center, float radius, float angleInRadians)
+    {
+        float x = center.x + radius * Mathf.Cos(angleInRadians);
+        float y = center.y + radius * Mathf.Sin(angleInRadians);
+
+        return new Vector2(y, x);
+    }
 
     public void TakeDamage(int amount)
     {
