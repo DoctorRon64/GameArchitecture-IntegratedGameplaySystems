@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/6_Scenes/TitleScreen.unity
     guid: 0ae7675f491953c4eac3096ebf1113d4
   - enabled: 1
-    path: Assets/6_Scenes/IvarScene.unity
+    path: Assets/6_Scenes/GameScene.unity
     guid: 7d2a675c92bb42842bd5521782d880d1
   - enabled: 1
     path: Assets/6_Scenes/GameOverScene.unity
