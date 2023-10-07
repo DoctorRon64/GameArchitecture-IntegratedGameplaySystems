@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private GridManager gridManager;
     private BulletManager bulletManager;
     private InputManager inputManager;
+    [SerializeField] private SceneManagerObject sceneManagerObject;
 
     [Header("Cinemachine")]
     public new CinemachineVirtualCamera camera;
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
         //set cinemachine camera to player
         Player player = playerManager.GetPlayer();
         camera.Follow = player.Instance.transform;
+
+        player.OnDiePlayer += sceneManagerObject.LoadScene;
     }
 
     public void AddUpdate(IUpdateable script)

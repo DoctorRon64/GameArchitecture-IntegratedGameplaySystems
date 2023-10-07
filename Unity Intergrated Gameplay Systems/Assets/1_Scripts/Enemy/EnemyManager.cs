@@ -78,7 +78,7 @@ public class EnemyManager : IFixedUpdateable
             Player player = playerManager.GetPlayer();
             _instance.OnCollision -= OnEnemyCollision;
             player.TakeDamage(gameSettings.EnemyDamage);
-            _instance.Die();
+            _instance.OnDie();
         }
 
     }

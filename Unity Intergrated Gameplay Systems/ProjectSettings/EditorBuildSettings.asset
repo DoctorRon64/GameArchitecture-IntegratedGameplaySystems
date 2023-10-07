@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/6_Scenes/TitleScreen.unity
     guid: 0ae7675f491953c4eac3096ebf1113d4
   - enabled: 1
-    path: Assets/6_Scenes/BulletScene.unity
-    guid: 9668cabb5bbca314194fef4685b3302c
+    path: Assets/6_Scenes/IvarScene.unity
+    guid: 7d2a675c92bb42842bd5521782d880d1
+  - enabled: 1
+    path: Assets/6_Scenes/GameOverScene.unity
+    guid: 2373f5c823492794fa305194ad095dfd
   m_configObjects: {}

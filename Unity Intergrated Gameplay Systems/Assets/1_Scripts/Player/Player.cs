@@ -16,7 +16,6 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     private float damping;
 
     private float ShootCooldownTimer;
-
     private float bulletFromPlayerDistance = 1f;
     public Action<Vector2, Vector2> FireBullet;
 
@@ -24,6 +23,7 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     private InputManager inputHandler;
     private BulletManager bulletManager;
     private GameSettings gameSettings;
+    public Action<string> OnDiePlayer;
     
     public Player(GameObject _prefab, BulletManager _bulletManager, InputManager _input, GameSettings _gameSettings, Transform _parent) 
     {
@@ -54,6 +54,7 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     public void OnFixedUpdate()
     {
         MovePlayer();
+        RotatePlayer();
 
         if (ShootCooldownTimer >= 0)
         {
@@ -78,7 +79,11 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
 
     private void RotatePlayer()
     {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mousePos - Instance.transform.position;
 
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Instance.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
     }
 
     private void FireGun()
@@ -102,11 +107,6 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         return circlePoint;
     }
 
-    private Vector2 CalcDirection(Vector2 _pos1, Vector2 _pos2)
-    {
-        return new Vector2(_pos1.x - _pos2.x, _pos1.y - _pos2.y);
-    }
-
     private Vector2 CalculatePointOnCircle(Vector2 center, float radius, float angleInRadians)
     {
         float x = center.x + radius * Mathf.Cos(angleInRadians);
@@ -115,13 +115,23 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         return new Vector2(x, y);
     }
 
+    private Vector2 CalcDirection(Vector2 _pos1, Vector2 _pos2)
+    {
+        return new Vector2(_pos1.x - _pos2.x, _pos1.y - _pos2.y);
+    }
+
     public void TakeDamage(int amount)
     {
         Health -= amount;       
+
+        if (Health <= 0)
+        {
+            OnDie();
+        }
     }
 
-    public void Die()
+    public void OnDie()
     {
-        Debug.Log("Game Over!! (Player Died)");
+        OnDiePlayer?.Invoke("GameOverScene");
     }
 }

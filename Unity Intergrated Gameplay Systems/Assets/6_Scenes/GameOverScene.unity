@@ -346,7 +346,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start
+  m_Text: Restart
 --- !u!222 &712941820
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: IvarScene
+          m_StringArgument: BulletScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1133637002
@@ -561,7 +561,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Planet Destroyer
+  m_Text: 'Game
+
+    Over'
 --- !u!222 &1330238024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -641,7 +643,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Planet Destroyer
+  m_Text: 'Game
+
+    Over'
 --- !u!222 &1341133437
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -825,7 +829,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start
+  m_Text: Restart
 --- !u!222 &1928385521
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -892,7 +896,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d9398a0270d306148b89a31cc8a9c977, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 979fc76a11a1a074999f13fac0a55753, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
