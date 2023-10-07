@@ -17,7 +17,7 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
 
     private float ShootCooldownTimer;
 
-    private float bulletFromPlayerDistance = 2f;
+    private float bulletFromPlayerDistance = 1f;
     public Action<Vector2, Vector2> FireBullet;
 
     //Reference

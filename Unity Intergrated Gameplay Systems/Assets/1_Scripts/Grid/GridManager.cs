@@ -20,6 +20,7 @@ public class GridManager
         tileFactory = new TileFactory(gameSettings);
 
         GeneratePlanet();
+        GenerateBorders();
     }
 
     public Tile GetTile(Vector2Int _pos)
@@ -75,7 +76,7 @@ public class GridManager
 
         if (randomInt <= gameSettings.EnemySpawnChance)
         {
-            enemyManager.AddEnemy("Enemy", new Vector2(0, 0));
+            enemyManager.AddEnemy("Enemy", GetEmptyTileAroundTile(new Vector2Int(_pos.x, _pos.y), 1));
         }
     }
 
@@ -95,6 +96,20 @@ public class GridManager
         GenerateCircle("Dirt", dirtEndRadius, dirtStartRadius, gridMiddlePoint);
         GenerateCircle("Stone", stoneEndRadius, stoneStartRadius, gridMiddlePoint);
         GenerateCircle("HardStone", hardStoneEndRadius, hardStoneStartRadius, gridMiddlePoint);
+    }
+
+    private void GenerateBorders()
+    {
+        for (int y = 0; y < gameSettings.Size.y; y++)
+        {
+            for (int x = 0; x < gameSettings.Size.x; x++)
+            {
+                if (y == 0 || x == 0 || y == gameSettings.Size.y - 1 || x == gameSettings.Size.x - 1)
+                {
+                    AddTile("Invis", new Vector2Int(x, y));
+                }
+            }
+        }
     }
 
     private void GenerateCircle(string tileType, int endRadius, int startRadius, Vector2Int middlePoint)
@@ -119,6 +134,26 @@ public class GridManager
                 }
             }
         }
+    }
+
+    private Vector2Int GetEmptyTileAroundTile(Vector2Int target, int radius)
+    {
+        for (int y = target.y - radius; y < target.y + radius; y++)
+        {
+            for (int x = target.x - radius; x < target.x + radius; x++)
+            {
+                if (CheckIfIsInGridBounds(new Vector2Int(x, y)))
+                {
+                    if (GetTile(new Vector2Int(x, y)) == null)
+                    {
+                        return new Vector2Int(x, y);
+                    }
+                }
+            }
+        }
+
+        Debug.LogError("Couldn't Find Empty Tile Around " + target + " with radius " + radius);
+        return new Vector2Int(0, 0);
     }
 
     private bool CheckIfIsInGridBounds(Vector2Int _pos)

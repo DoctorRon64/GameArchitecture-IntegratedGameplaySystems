@@ -12,13 +12,15 @@ public class BulletManager : IUpdateable, IFixedUpdateable
     //References
     private GridManager gridManager;
     private GameSettings gameSettings;
+    private EnemyManager enemyManager;
 
-    public BulletManager(GridManager _gridManager, GameSettings _gameSettings)
+    public BulletManager(GridManager _gridManager, GameSettings _gameSettings, EnemyManager _enemyManager)
     {
         bulletFactory = new BulletFactory(_gameSettings);
         bulletPool = new ObjectPool<Bullet>();
         gridManager = _gridManager;
         gameSettings = _gameSettings;
+        enemyManager = _enemyManager;
         bulletPoolSize = gameSettings.BulletPoolSize;
 
         if (bulletPoolSize <= 0)
@@ -46,7 +48,7 @@ public class BulletManager : IUpdateable, IFixedUpdateable
     public void FireBullet(Vector2 _pos, Vector2 _direction)
     {
         Bullet bullet = bulletPool.RequestObject(_pos);
-        bullet.Direction = _direction;
+        bullet.FireBullet(_direction);
         bullet.OnCollision += OnBulletCollision;
     }
 
@@ -66,6 +68,13 @@ public class BulletManager : IUpdateable, IFixedUpdateable
             {
                 Debug.LogError("BulletManager can't find tile in GridManager");
             }
+        }
+
+        //If Other is a Enemy
+        if (other.gameObject.layer == LayerMask.NameToLayer("EnemyLayer"))
+        {
+            Enemy currentEnemy = enemyManager.GetEnemy(other.gameObject);
+            currentEnemy.TakeDamage(gameSettings.BulletDamage);
         }
 
         bulletPool.DeactivateItem(_instance);

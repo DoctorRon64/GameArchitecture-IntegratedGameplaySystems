@@ -21,25 +21,33 @@ public class EnemyManager : IFixedUpdateable
         }
     }
 
+    public Enemy GetEnemy(GameObject _instance)
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].Instance == _instance)
+            {
+                return enemies[i];
+            }
+        }
+
+        Debug.LogError("EnemyManager Couldn't find Enemy");
+        return null;
+    }
+
     public void AddEnemy(string _enemyType, Vector2 _pos)
     {
         Enemy newEnemy = enemyFactory.Create(_enemyType);
         newEnemy.Instance.transform.position = new Vector3(_pos.x, -_pos.y, 0);
         enemies.Add(newEnemy);
+        newEnemy.OnDied += RemoveEnemy;
     }
 
-    public void RemoveEnemy(GameObject enemy)
+    public void RemoveEnemy(Enemy enemy)
     {
-
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            if (enemies[i].Instance == enemy)
-            {
-                enemies.Remove(enemies[i]);
-                break;
-            }
-        }
-
-        Debug.LogError("EnemyManager can't find " + enemy.name + " in enemies");
+        enemies.Remove(enemy);
+        enemy.OnDied -= RemoveEnemy;
+        GameObject.Destroy(enemy.Instance);
+        enemy = null;
     }
 }

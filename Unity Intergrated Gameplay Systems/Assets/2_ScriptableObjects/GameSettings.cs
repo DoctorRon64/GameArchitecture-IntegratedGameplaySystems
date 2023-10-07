@@ -28,5 +28,6 @@ public class GameSettings : ScriptableObject
     [Header("Enemy Settings")]
     public int EnemyAttackRange;
     public float EnemySpeed;
+    public int EnemyHealth;
     public int EnemySpawnChance;
 }

@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [Header("Cinemachine")]
     public new CinemachineVirtualCamera camera;
 
+    private int score;
+
     public void Awake()
     {
         if (gameSettings == null)
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour
         gridManager = new GridManager(gameSettings, enemyManager);
 
         //Bullet
-        bulletManager = new BulletManager(gridManager, gameSettings);
+        bulletManager = new BulletManager(gridManager, gameSettings, enemyManager);
         AddUpdate(bulletManager);
         AddFixedUpdate(bulletManager);
 
@@ -72,6 +74,11 @@ public class GameManager : MonoBehaviour
         {
             fixedUpdateables.Remove(script as IFixedUpdateable);
         }
+    }
+
+    public void AddScore(int _amount)
+    {
+        score += _amount;
     }
 
     private void Update()

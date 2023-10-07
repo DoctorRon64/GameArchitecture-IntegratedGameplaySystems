@@ -12,6 +12,7 @@ public class PlayerManager : IFixedUpdateable
         playerFactory = new PlayerFactory(_inputManager, _bulletManager, _gameSettings);
 
         player = playerFactory.Create("Player");
+        player.Instance.transform.position = new Vector3(5, -5, 0);
     }
 
     public Player ReturnPlayer()

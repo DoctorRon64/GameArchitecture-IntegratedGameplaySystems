@@ -28,6 +28,7 @@ public class TileFactory : IFactory<Tile, TileFlyweight>
         FactoryDictionary.Add("Dirt", new TileFlyweight(Resources.Load<GameObject>("Prefabs/Dirt"), gameSettings.Dirt.MaxHealth));
         FactoryDictionary.Add("Stone", new TileFlyweight(Resources.Load<GameObject>("Prefabs/Stone"), gameSettings.Stone.MaxHealth));
         FactoryDictionary.Add("HardStone", new TileFlyweight(Resources.Load<GameObject>("Prefabs/HardStone"), gameSettings.HardStone.MaxHealth));
+        FactoryDictionary.Add("Invis", new TileFlyweight(Resources.Load<GameObject>("Prefabs/Invis"), 1000000));
     }
 
     public Tile Create(string _key)
