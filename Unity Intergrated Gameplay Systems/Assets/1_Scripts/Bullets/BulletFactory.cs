@@ -7,8 +7,12 @@ public class BulletFactory : IFactory<Bullet, GameObject>
     public Dictionary<string, GameObject> FactoryDictionary { get; set; }
     public GameObject Parent { get; set; }
 
-    public BulletFactory()
+    private GameSettings gameSettings;
+
+    public BulletFactory(GameSettings _gameSettings)
     {
+        gameSettings = _gameSettings;
+
         //Dictionary
         FactoryDictionary = new Dictionary<string, GameObject>();
         InitializeDictionary();
@@ -27,7 +31,7 @@ public class BulletFactory : IFactory<Bullet, GameObject>
     {
         if (FactoryDictionary.ContainsKey(_key))
         {
-            return new Bullet(FactoryDictionary[_key], Parent.transform);
+            return new Bullet(FactoryDictionary[_key], Parent.transform, gameSettings);
         }
         else
         {

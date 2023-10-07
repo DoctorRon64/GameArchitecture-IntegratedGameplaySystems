@@ -25,6 +25,8 @@ MonoBehaviour:
     MaxHealth: 100
   BulletPoolSize: 20
   BulletDamage: 10
+  bulletSpeed: 0.5
+  ShootCooldown: 0.1
   EnemyAttackRange: 20
   EnemySpeed: 10
-  EnemySpawnChance: 50
+  EnemySpawnChance: 5

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
         //Enemys
         EnemyManager enemyManager = new EnemyManager(gameSettings);
         AddFixedUpdate(enemyManager);
-        enemyManager.AddEnemy("Enemy", new Vector2(10, 10));
 
         gridManager = new GridManager(gameSettings, enemyManager);
 
@@ -48,7 +46,7 @@ public class GameManager : MonoBehaviour
         AddUpdate(inputManager);
 
         //Player
-        PlayerManager playerManager = new PlayerManager(inputManager, bulletManager);
+        PlayerManager playerManager = new PlayerManager(inputManager, bulletManager, gameSettings);
         AddFixedUpdate(playerManager);
 
         //set cinemachine camera to player
@@ -90,10 +88,5 @@ public class GameManager : MonoBehaviour
         {
             iFixedUpdateble.OnFixedUpdate();
         }
-    }
-
-    public void GotoNextScene(string _sceneName)
-    {
-        SceneManager.LoadScene(_sceneName);
     }
 }
