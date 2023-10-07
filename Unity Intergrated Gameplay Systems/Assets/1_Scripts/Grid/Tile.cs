@@ -26,22 +26,20 @@ public class Tile : IDamagable, IInstantiatable
     public delegate void TileDied(Vector2Int pos);
     public event TileDied OnDied;
 
-    public Tile(Sprite _sprite, Transform _parent, int _maxHealth)
+    public Tile(GameObject _prefab, Transform _parent, int _maxHealth)
     {
-        //Instance
-        Instance = new GameObject();
-        Instance.transform.SetParent(_parent);
-
-        SpriteRenderer renderer = Instance.AddComponent<SpriteRenderer>();
-        renderer.sprite = _sprite;
-
-        BoxCollider2D collider = Instance.AddComponent<BoxCollider2D>();
-        collider.size = new Vector2(1, 1);
+        Instantiate(_prefab, _parent);
 
         Instance.layer = LayerMask.NameToLayer("TileLayer");
 
         MaxHealth = _maxHealth;
         Health = MaxHealth;
+    }
+
+    public void Instantiate(GameObject _prefab, Transform _parent)
+    {
+        Instance = GameObject.Instantiate(_prefab);
+        Instance.transform.SetParent(_parent);
     }
 
     //IDamagable

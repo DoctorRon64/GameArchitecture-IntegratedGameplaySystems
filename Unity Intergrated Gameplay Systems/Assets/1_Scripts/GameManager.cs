@@ -30,7 +30,12 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        gridManager = new GridManager(gameSettings);
+        //Enemys
+        EnemyManager enemyManager = new EnemyManager(gameSettings);
+        AddFixedUpdate(enemyManager);
+        enemyManager.AddEnemy("Enemy", new Vector2(10, 10));
+
+        gridManager = new GridManager(gameSettings, enemyManager);
 
         //Bullet
         bulletManager = new BulletManager(gridManager, gameSettings);

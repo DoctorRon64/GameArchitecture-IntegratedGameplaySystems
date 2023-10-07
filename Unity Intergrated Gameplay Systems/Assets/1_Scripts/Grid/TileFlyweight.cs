@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TileFlyweight 
 {
-    public Sprite Sprite { get; private set; }
+    public GameObject Prefab { get; private set; }
     public int MaxHealth { get; private set; }
 
-    public TileFlyweight(Sprite _sprite, int _maxHealth)
+    public TileFlyweight(GameObject _prefab, int _maxHealth)
     {
-        Sprite = _sprite;
+        Prefab = _prefab;
         MaxHealth = _maxHealth;
     }
 }

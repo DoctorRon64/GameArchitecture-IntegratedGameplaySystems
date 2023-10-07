@@ -15,11 +15,16 @@ public class GameSettings : ScriptableObject
     public int HardStonePercentage;
 
     [Header("Tile Settings")]
-    public TileSettings dirt;
-    public TileSettings stone;
-    public TileSettings hardStone;
+    public TileSettings Dirt;
+    public TileSettings Stone;
+    public TileSettings HardStone;
 
     [Header("Bullet Settings")]
-    public int bulletPoolSize;
-    public int bulletDamage;
+    public int BulletPoolSize;
+    public int BulletDamage;
+
+    [Header("Enemy Settings")]
+    public int EnemyAttackRange;
+    public float EnemySpeed;
+    public int EnemySpawnChance;
 }
