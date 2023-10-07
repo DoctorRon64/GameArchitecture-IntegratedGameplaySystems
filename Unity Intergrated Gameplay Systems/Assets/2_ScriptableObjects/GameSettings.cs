@@ -34,4 +34,8 @@ public class GameSettings : ScriptableObject
 
     [Header("Player Settings")]
     public int PlayerHealth;
+
+    [Header("Score Settings")]
+    public int EnemyKillScore;
+    public int TileKillScore;
 }
