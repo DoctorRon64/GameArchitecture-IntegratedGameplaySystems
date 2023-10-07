@@ -81,7 +81,7 @@ public class EnemyManager : IFixedUpdateable
             _instance.OnCollision -= OnEnemyCollision;
             player.TakeDamage(gameSettings.EnemyDamage);
             gameManager.Score += gameSettings.EnemyKillScore;
-            _instance.Die();
+            _instance.OnDie();
         }
     }
 

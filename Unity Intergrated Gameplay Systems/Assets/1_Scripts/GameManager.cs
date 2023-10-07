@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     //ScriptableObjects
     [SerializeField] private GameSettings gameSettings;
-
+    [SerializeField] private SceneManagerObject sceneManagerObject;
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private GridManager gridManager;
     private BulletManager bulletManager;
     private InputManager inputManager;
+
     private UI ui;
 
     [Header("Cinemachine")]
