@@ -18,15 +18,18 @@ MonoBehaviour:
   StonePercentage: 50
   HardStonePercentage: 30
   Dirt:
-    MaxHealth: 20
+    MaxHealth: 10
   Stone:
-    MaxHealth: 50
+    MaxHealth: 20
   HardStone:
-    MaxHealth: 100
+    MaxHealth: 40
   BulletPoolSize: 20
   BulletDamage: 10
-  bulletSpeed: 0.5
+  bulletSpeed: 5
   ShootCooldown: 0.1
   EnemyAttackRange: 20
-  EnemySpeed: 10
-  EnemySpawnChance: 5
+  EnemySpeed: 15
+  EnemyHealth: 100
+  EnemySpawnChance: 8
+  EnemyDamage: 10
+  PlayerHealth: 100
