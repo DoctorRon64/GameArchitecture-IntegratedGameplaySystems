@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    //UI
+    public int Score { get; set; }
+    [SerializeField] private Text scoreText;
+
     //ScriptableObjects
     [SerializeField] private GameSettings gameSettings;
 
@@ -16,12 +21,10 @@ public class GameManager : MonoBehaviour
     private GridManager gridManager;
     private BulletManager bulletManager;
     private InputManager inputManager;
-    [SerializeField] private SceneManagerObject sceneManagerObject;
+    private UI ui;
 
     [Header("Cinemachine")]
     public new CinemachineVirtualCamera camera;
-
-    private int score;
 
     public void Awake()
     {
@@ -33,15 +36,19 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        //UI
+        ui = new UI(scoreText, this);
+        AddFixedUpdate(ui);
+
         //Input
-        inputManager = new InputManager();
+        inputManager = new InputManager(camera);
         AddUpdate(inputManager);
 
         //Enemys
-        EnemyManager enemyManager = new EnemyManager(gameSettings);
+        EnemyManager enemyManager = new EnemyManager(gameSettings, this);
         AddFixedUpdate(enemyManager);
 
-        gridManager = new GridManager(gameSettings, enemyManager);
+        gridManager = new GridManager(gameSettings, enemyManager, this);
 
         //Bullet
         bulletManager = new BulletManager(gridManager, gameSettings, enemyManager);
@@ -52,7 +59,6 @@ public class GameManager : MonoBehaviour
         PlayerManager playerManager = new PlayerManager(inputManager, bulletManager, gameSettings);
         AddFixedUpdate(playerManager);
         enemyManager.AddPlayerManager(playerManager);
-
 
         //set cinemachine camera to player
         Player player = playerManager.GetPlayer();
@@ -79,11 +85,6 @@ public class GameManager : MonoBehaviour
         {
             fixedUpdateables.Remove(script as IFixedUpdateable);
         }
-    }
-
-    public void AddScore(int _amount)
-    {
-        score += _amount;
     }
 
     private void Update()

@@ -11,11 +11,13 @@ public class GridManager
     //References
     private GameSettings gameSettings;
     private EnemyManager enemyManager;
+    private GameManager gameManager;
 
-    public GridManager(GameSettings _gameSettings, EnemyManager _enemyManager)
+    public GridManager(GameSettings _gameSettings, EnemyManager _enemyManager, GameManager _gameManager)
     {
         enemyManager = _enemyManager;
         gameSettings = _gameSettings;
+        gameManager = _gameManager;
         grid = new Tile[gameSettings.Size.x, gameSettings.Size.y];
         tileFactory = new TileFactory(gameSettings);
 
@@ -46,7 +48,7 @@ public class GridManager
             //Instance
             grid[_pos.x, _pos.y] = tileFactory.Create(_tileType);
             grid[_pos.x, _pos.y].Pos = _pos;
-            grid[_pos.x, _pos.y].OnDied += RemoveTile;
+            grid[_pos.x, _pos.y].OnDied += RemoveTileOnDied;
             grid[_pos.x, _pos.y].OnDied += MaybeSummonEnemy;
         }
         else
@@ -60,13 +62,26 @@ public class GridManager
         if (CheckIfIsInGridBounds(_pos))
         {
             GameObject.Destroy(grid[_pos.x, _pos.y].Instance);
-            grid[_pos.x, _pos.y].OnDied -= RemoveTile;
+            grid[_pos.x, _pos.y].OnDied -= RemoveTileOnDied;
             grid[_pos.x, _pos.y].OnDied -= MaybeSummonEnemy;
             grid[_pos.x, _pos.y] = null;
         }
         else
         {
             Debug.LogError("RemoveTile: " + _pos.x + ", " + _pos.y + " Is out of bounds");
+        }
+    }
+
+    public void RemoveTileOnDied(Vector2Int _pos)
+    {
+        if (CheckIfIsInGridBounds(_pos))
+        {
+            gameManager.Score += gameSettings.TileKillScore;
+            RemoveTile(_pos);
+        }
+        else
+        {
+            Debug.LogError("RemoveTileOnDied: " + _pos.x + ", " + _pos.y + " Is out of bounds");
         }
     }
 

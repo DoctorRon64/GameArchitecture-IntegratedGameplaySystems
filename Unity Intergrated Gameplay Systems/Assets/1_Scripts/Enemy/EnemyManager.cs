@@ -11,9 +11,11 @@ public class EnemyManager : IFixedUpdateable
     //References
     private PlayerManager playerManager;
     private GameSettings gameSettings;
+    private GameManager gameManager;
 
-    public EnemyManager(GameSettings _gameSettings)
+    public EnemyManager(GameSettings _gameSettings, GameManager _gamemanager)
     {
+        gameManager = _gamemanager;
         gameSettings = _gameSettings;
 
         enemyFactory = new EnemyFactory(_gameSettings);
@@ -78,9 +80,9 @@ public class EnemyManager : IFixedUpdateable
             Player player = playerManager.GetPlayer();
             _instance.OnCollision -= OnEnemyCollision;
             player.TakeDamage(gameSettings.EnemyDamage);
-            _instance.OnDie();
+            gameManager.Score += gameSettings.EnemyKillScore;
+            _instance.Die();
         }
-
     }
 
 }
