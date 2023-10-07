@@ -15,7 +15,7 @@ public class BulletManager : IUpdateable, IFixedUpdateable
 
     public BulletManager(GridManager _gridManager, GameSettings _gameSettings)
     {
-        bulletFactory = new BulletFactory();
+        bulletFactory = new BulletFactory(_gameSettings);
         bulletPool = new ObjectPool<Bullet>();
         gridManager = _gridManager;
         gameSettings = _gameSettings;
@@ -43,9 +43,10 @@ public class BulletManager : IUpdateable, IFixedUpdateable
         
     }
 
-    public void FireBulletOutofObjectPool(Vector2 _pos)
+    public void FireBullet(Vector2 _pos, Vector2 _direction)
     {
         Bullet bullet = bulletPool.RequestObject(_pos);
+        bullet.Direction = _direction;
         bullet.OnCollision += OnBulletCollision;
     }
 

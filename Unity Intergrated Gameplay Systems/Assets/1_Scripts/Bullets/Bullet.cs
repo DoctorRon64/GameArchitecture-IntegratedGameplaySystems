@@ -9,13 +9,19 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
     public GameObject Instance { get; set; }
     public Collider2D collider { get; set; }
     public Action<Collider2D, Bullet> OnCollision { get; set; }
+    public Vector2 Direction { get; set; }
+    public Rigidbody2D Rigidbody { get; private set; }
 
-    public Bullet(GameObject _prefab, Transform _parent)
+    private GameSettings gameSettings;
+
+    public Bullet(GameObject _prefab, Transform _parent, GameSettings _gameSettings)
     {
         Instantiate(_prefab, _parent);
 
         //collider
+        Rigidbody = Instance.GetComponent<Rigidbody2D>();
         collider = Instance.GetComponent<Collider2D>();
+        gameSettings = _gameSettings;
     }
 
     public void Instantiate(GameObject _prefab, Transform _parent)
@@ -55,6 +61,8 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
     public void OnUpdate()
     {
         CheckCollisions();
+
+        Rigidbody.AddForce(Direction * gameSettings.bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void SetPosition(Vector2 _pos)

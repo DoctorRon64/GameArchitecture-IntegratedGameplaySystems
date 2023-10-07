@@ -22,6 +22,8 @@ public class GameSettings : ScriptableObject
     [Header("Bullet Settings")]
     public int BulletPoolSize;
     public int BulletDamage;
+    public float bulletSpeed;
+    public float ShootCooldown;
 
     [Header("Enemy Settings")]
     public int EnemyAttackRange;

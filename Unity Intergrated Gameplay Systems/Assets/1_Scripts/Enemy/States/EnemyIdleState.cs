@@ -24,7 +24,7 @@ public class EnemyIdleState : IState<Enemy>
         {
             if (collider.gameObject.layer == LayerMask.NameToLayer("PlayerLayer"))
             {
-                StateOwner.fsm.SwitchState("EnemyAttackState");
+                StateOwner.movementFSM.SwitchState("EnemyAttackState");
             }
         }
     }

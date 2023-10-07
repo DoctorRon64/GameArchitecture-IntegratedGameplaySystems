@@ -7,7 +7,7 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
     public int Health { get; set; }
     public int MaxHealth { get; set; }
     public GameObject Instance { get; set; }
-    public StateMachine<Enemy> fsm { get; private set; }
+    public StateMachine<Enemy> movementFSM { get; private set; }
     public GameSettings GameSettings { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
 
@@ -19,10 +19,10 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
         Rigidbody = Instance.GetComponent<Rigidbody2D>();
 
         //FSM
-        fsm = new StateMachine<Enemy>(this);
-        fsm.AddState("EnemyIdleState", new EnemyIdleState());
-        fsm.AddState("EnemyAttackState", new EnemyAttackState());
-        fsm.SwitchState("EnemyIdleState");
+        movementFSM = new StateMachine<Enemy>(this);
+        movementFSM.AddState("EnemyIdleState", new EnemyIdleState());
+        movementFSM.AddState("EnemyAttackState", new EnemyAttackState());
+        movementFSM.SwitchState("EnemyIdleState");
     }
 
     public void Instantiate(GameObject _prefab, Transform _parent)
@@ -33,7 +33,7 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable
 
     public void OnFixedUpdate()
     {
-        fsm.OnUpdate();
+        movementFSM.OnUpdate();
     }
 
     public void TakeDamage(int amount)

@@ -7,9 +7,9 @@ public class PlayerManager : IFixedUpdateable
     private PlayerFactory playerFactory;
     public Player player;
 
-    public PlayerManager(InputManager inputManager, BulletManager bulletManager)
+    public PlayerManager(InputManager _inputManager, BulletManager _bulletManager, GameSettings _gameSettings)
     {
-        playerFactory = new PlayerFactory(inputManager, bulletManager);
+        playerFactory = new PlayerFactory(_inputManager, _bulletManager, _gameSettings);
 
         player = playerFactory.Create("Player");
     }
