@@ -7,6 +7,7 @@ public class BulletFactory : IFactory<Bullet, GameObject>
     public Dictionary<string, GameObject> FactoryDictionary { get; set; }
     public GameObject Parent { get; set; }
 
+    //References
     private GameSettings gameSettings;
 
     public BulletFactory(GameSettings _gameSettings)

@@ -691,9 +691,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 250460423}
+  VirtualCamera: {fileID: 524770565}
   gameSettings: {fileID: 11400000, guid: cbe4276f73ea0fa4bb12258c94d32c52, type: 2}
   sceneManagerObject: {fileID: 11400000, guid: b837195e403c3344282254ee85b6c24d, type: 2}
-  camera: {fileID: 524770565}
 --- !u!1 &1872088531
 GameObject:
   m_ObjectHideFlags: 3

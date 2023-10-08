@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerManager : IFixedUpdateable
 {
     private PlayerFactory playerFactory;
+
     public Player player;
 
     public PlayerManager(InputManager _inputManager, BulletManager _bulletManager, GameSettings _gameSettings)
@@ -15,13 +16,13 @@ public class PlayerManager : IFixedUpdateable
         player.Instance.transform.position = new Vector3(5, -5, 0);
     }
 
-    public Player GetPlayer()
-    {
-        return player;
-    }
-
     public void OnFixedUpdate()
     {
         player.OnFixedUpdate();
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
     }
 }

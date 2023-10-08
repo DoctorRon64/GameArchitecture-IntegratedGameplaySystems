@@ -11,17 +11,21 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
     public Action<Collider2D, Bullet> OnCollision { get; set; }
     public Rigidbody2D Rigidbody { get; private set; }
 
+    //References
     private GameSettings gameSettings;
 
     public Bullet(GameObject _prefab, Transform _parent, GameSettings _gameSettings)
     {
-        Instantiate(_prefab, _parent);
-
-        //collider
-        Rigidbody = Instance.GetComponent<Rigidbody2D>();
-        collider = Instance.GetComponent<Collider2D>();
-
         gameSettings = _gameSettings;
+
+        Instantiate(_prefab, _parent);
+        collider = Instance.GetComponent<Collider2D>();
+        Rigidbody = Instance.GetComponent<Rigidbody2D>();
+    }
+
+    public void OnUpdate()
+    {
+        CheckCollisions();
     }
 
     public void Instantiate(GameObject _prefab, Transform _parent)
@@ -30,9 +34,12 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
         Instance.transform.SetParent(_parent);
     }
 
-    public void DisablePoolabe()
+    public void FireBullet(Vector2 _direction)
     {
-        Instance.SetActive(false);
+        Vector2 bulletDir = _direction * gameSettings.bulletSpeed;
+        bulletDir.Normalize();
+
+        Rigidbody.AddForce(bulletDir * gameSettings.bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void EnablePoolabe()
@@ -40,13 +47,9 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
         Instance.SetActive(true);
     }
 
-    public void FireBullet(Vector2 _direction)
+    public void DisablePoolabe()
     {
-        Vector2 bulletDir = new Vector2();
-        bulletDir = _direction * gameSettings.bulletSpeed;
-        bulletDir.Normalize();
-
-        Rigidbody.AddForce(bulletDir * gameSettings.bulletSpeed, ForceMode2D.Impulse);
+        Instance.SetActive(false);
     }
 
     public void CheckCollisions()
@@ -60,11 +63,6 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
                 OnCollision?.Invoke(otherCollider, this);
             }
         }
-    }
-
-    public void OnUpdate()
-    {
-        CheckCollisions();
     }
 
     public void SetPosition(Vector2 _pos)

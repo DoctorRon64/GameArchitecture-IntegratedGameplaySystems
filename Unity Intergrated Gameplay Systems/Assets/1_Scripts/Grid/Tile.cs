@@ -6,7 +6,7 @@ public class Tile : IDamagable, IInstantiatable
 {
     public Vector2Int Pos 
     {
-        get { return pos; }
+        get => pos;
 
         set
         {
@@ -16,24 +16,22 @@ public class Tile : IDamagable, IInstantiatable
     }
     private Vector2Int pos;
 
-    //IInstantiateble
-    public GameObject Instance { get; set; }
-
-    //IDamagable
     public int Health { get; set; }
     public int MaxHealth { get; set; }
+    public GameObject Instance { get; set; }
 
+    //Events
     public delegate void TileDied(Vector2Int pos);
     public event TileDied OnDied;
 
     public Tile(GameObject _prefab, Transform _parent, int _maxHealth)
     {
+        MaxHealth = _maxHealth;
+        Health = MaxHealth;
+
         Instantiate(_prefab, _parent);
 
         Instance.layer = LayerMask.NameToLayer("TileLayer");
-
-        MaxHealth = _maxHealth;
-        Health = MaxHealth;
     }
 
     public void Instantiate(GameObject _prefab, Transform _parent)
@@ -42,7 +40,6 @@ public class Tile : IDamagable, IInstantiatable
         Instance.transform.SetParent(_parent);
     }
 
-    //IDamagable
     public void TakeDamage(int _damageAmount)
     {
         Health -= _damageAmount;

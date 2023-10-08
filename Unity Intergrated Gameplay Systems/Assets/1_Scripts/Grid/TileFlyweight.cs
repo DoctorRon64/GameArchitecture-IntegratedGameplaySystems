@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//I dont even know if you can call this a flyweight
 public class TileFlyweight 
 {
     public GameObject Prefab { get; private set; }

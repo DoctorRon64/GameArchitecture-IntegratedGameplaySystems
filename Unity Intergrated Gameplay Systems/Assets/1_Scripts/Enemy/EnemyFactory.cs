@@ -6,10 +6,14 @@ public class EnemyFactory : IFactory<Enemy, GameObject>
 {
     public Dictionary<string, GameObject> FactoryDictionary { get; set; }
     public GameObject Parent { get; set; }
+
+    //References
     private GameSettings gameSettings;
 
     public EnemyFactory(GameSettings _gameSettings)
     {
+        gameSettings = _gameSettings;
+
         //Dictionary
         FactoryDictionary = new Dictionary<string, GameObject>();
         InitializeDictionary();
@@ -17,8 +21,6 @@ public class EnemyFactory : IFactory<Enemy, GameObject>
         //Parent
         Parent = new GameObject();
         Parent.name = "Enemys";
-
-        gameSettings = _gameSettings;
     }
 
     public void InitializeDictionary()

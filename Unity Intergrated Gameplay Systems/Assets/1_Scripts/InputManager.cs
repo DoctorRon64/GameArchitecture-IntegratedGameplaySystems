@@ -6,11 +6,12 @@ using UnityEngine;
 
 public class InputManager : IUpdateable
 {
-    public Action OnLeftMouseButton;
-
     public float HorizontalInput;
     public float VerticalInput;
     
+    //Events
+    public Action OnLeftMouseButton;
+
     private float scrollInput;
     private KeyCode shootButton = KeyCode.F;
     private CinemachineVirtualCamera camera;

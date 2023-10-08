@@ -11,11 +11,22 @@ public class EnemyIdleState : IState<Enemy>
 
     }
 
-    public void OnExit()
+    public void OnUpdate()
     {
+        CheckAttackState();
     }
 
-    public void OnUpdate()
+    public void OnExit()
+    {
+
+    }
+
+    public void SetOwner(Enemy _stateOwner)
+    {
+        StateOwner = _stateOwner;
+    }
+
+    private void CheckAttackState()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(StateOwner.Instance.transform.position, StateOwner.GameSettings.EnemyAttackRange);
 
@@ -26,10 +37,5 @@ public class EnemyIdleState : IState<Enemy>
                 StateOwner.movementFSM.SwitchState("EnemyAttackState");
             }
         }
-    }
-
-    public void SetOwner(Enemy _stateOwner)
-    {
-        StateOwner = _stateOwner;
     }
 }

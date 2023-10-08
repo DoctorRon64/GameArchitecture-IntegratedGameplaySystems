@@ -58,8 +58,10 @@ public class EnemyManager : IFixedUpdateable
     public void AddEnemy(string _enemyType, Vector2 _pos)
     {
         Enemy newEnemy = enemyFactory.Create(_enemyType);
-        newEnemy.Instance.transform.position = new Vector3(_pos.x, -_pos.y, 0);
         enemies.Add(newEnemy);
+
+        newEnemy.Instance.transform.position = new Vector3(_pos.x, -_pos.y, 0);
+
         newEnemy.OnDied += RemoveEnemy;
         newEnemy.OnCollision += OnEnemyCollision;
     }
@@ -67,20 +69,26 @@ public class EnemyManager : IFixedUpdateable
     public void RemoveEnemy(Enemy enemy)
     {
         enemiesToDelete.Add(enemy);
+
         enemy.OnDied -= RemoveEnemy;
         enemy.OnCollision -= OnEnemyCollision;
+
         GameObject.Destroy(enemy.Instance);
         enemy = null;
     }
+
     public void OnEnemyCollision(Collider2D other, Enemy _instance)
     {
         //If Other is a Player
         if (other.gameObject.layer == LayerMask.NameToLayer("PlayerLayer"))
         {
             Player player = playerManager.GetPlayer();
+
             _instance.OnCollision -= OnEnemyCollision;
+
             player.TakeDamage(gameSettings.EnemyDamage);
             gameManager.Score += gameSettings.EnemyKillScore;
+
             _instance.OnDie();
         }
     }

@@ -10,44 +10,30 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     public GameObject Instance { get; set; }
 
     private Rigidbody2D rb2d;
-    private float moveSpeed;
-    private float rotateSpeed;
-    private float damping;
-
     private float ShootCooldownTimer;
-    private float bulletFromPlayerDistance = 1f;
+
+    //Events
     public Action<Vector2, Vector2> FireBullet;
+    public Action<string> OnDiePlayer;
 
     //Reference
     private InputManager inputHandler;
     private BulletManager bulletManager;
     private GameSettings gameSettings;
-    public Action<string> OnDiePlayer;
     
     public Player(GameObject _prefab, BulletManager _bulletManager, InputManager _input, GameSettings _gameSettings, Transform _parent) 
     {
-        Instantiate(_prefab, _parent);
-
-        rb2d = Instance.GetComponent<Rigidbody2D>();
         inputHandler = _input;
         bulletManager = _bulletManager;
         gameSettings = _gameSettings;
-
-        inputHandler.OnLeftMouseButton += FireGun;
-        FireBullet += bulletManager.FireBullet;
-
         MaxHealth = gameSettings.PlayerHealth;
         Health = MaxHealth;
 
-        moveSpeed = 5f;
-        rotateSpeed = 2f;
-        damping = 0.7f;   
-    }
+        Instantiate(_prefab, _parent);
+        rb2d = Instance.GetComponent<Rigidbody2D>();
 
-    public void Instantiate(GameObject _prefab, Transform _parent)
-    {
-        Instance = GameObject.Instantiate(_prefab);
-        Instance.transform.SetParent(_parent);
+        inputHandler.OnLeftMouseButton += FireGun;
+        FireBullet += bulletManager.FireBullet;
     }
 
     public void OnFixedUpdate()
@@ -61,6 +47,12 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         }
     }
 
+    public void Instantiate(GameObject _prefab, Transform _parent)
+    {
+        Instance = GameObject.Instantiate(_prefab);
+        Instance.transform.SetParent(_parent);
+    }
+
     private void MovePlayer()
     {
         Vector2 moveDirection = new Vector2(inputHandler.HorizontalInput, inputHandler.VerticalInput).normalized;
@@ -68,12 +60,12 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
         if (moveDirection != Vector2.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            rb2d.rotation = Mathf.LerpAngle(rb2d.rotation, angle, rotateSpeed * Time.deltaTime);
+            rb2d.rotation = Mathf.LerpAngle(rb2d.rotation, angle, gameSettings.PlayerRotateSpeed * Time.deltaTime);
         }
 
-        Vector2 targetVelocity = moveDirection * moveSpeed;
+        Vector2 targetVelocity = moveDirection * gameSettings.PlayerSpeed;
 
-        rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, 1 - damping);
+        rb2d.velocity = Vector2.Lerp(rb2d.velocity, targetVelocity, 1 - gameSettings.PlayerDamping);
     }
 
     private void RotatePlayer()
@@ -102,7 +94,7 @@ public class Player : IDamagable, IFixedUpdateable, IInstantiatable
     {
         float angle = MathF.Atan2(_distance.y, _distance.x);
         
-        Vector2 circlePoint = CalculatePointOnCircle(Instance.transform.position, bulletFromPlayerDistance, angle);
+        Vector2 circlePoint = CalculatePointOnCircle(Instance.transform.position, gameSettings.bulletSpawnDistance, angle);
         return circlePoint;
     }
 
