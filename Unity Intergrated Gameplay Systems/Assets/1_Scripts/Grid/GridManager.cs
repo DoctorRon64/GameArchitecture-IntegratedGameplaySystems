@@ -123,6 +123,11 @@ public class GridManager
                 {
                     AddTile("Invis", new Vector2Int(x, y));
                 }
+
+                if (y == 1 || x == 1 || y == gameSettings.Size.y - 2 || x == gameSettings.Size.x - 2)
+                {
+                    AddTile("Invis", new Vector2Int(x, y));
+                }
             }
         }
     }
