@@ -33,5 +33,9 @@ MonoBehaviour:
   EnemySpawnChance: 8
   EnemyDamage: 10
   PlayerHealth: 100
+  PlayerSpeed: 5
+  PlayerRotateSpeed: 2
+  PlayerDamping: 0.7
+  bulletSpawnDistance: 0.8
   EnemyKillScore: 50
   TileKillScore: 5

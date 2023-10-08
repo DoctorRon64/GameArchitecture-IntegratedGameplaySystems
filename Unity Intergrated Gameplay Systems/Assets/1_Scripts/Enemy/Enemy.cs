@@ -8,27 +8,29 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable, ICollidable<
     public int Health { get; set; }
     public int MaxHealth { get; set; }
     public GameObject Instance { get; set; }
-    public StateMachine<Enemy> movementFSM { get; private set; }
-    public Rigidbody2D Rigidbody { get; private set; }
-    public GameSettings GameSettings { get; private set; }
     public Collider2D collider { get; set; }
-    public Action<Collider2D, Enemy> OnCollision { get; set; }
+    public Rigidbody2D Rigidbody { get; private set; }
+    public StateMachine<Enemy> movementFSM { get; private set; }
 
+    //Events
     public delegate void EnemyDied(Enemy enemy);
     public event EnemyDied OnDied;
+    public Action<Collider2D, Enemy> OnCollision { get; set; }
 
+    //References
+    public GameSettings GameSettings { get; private set; }
 
     public Enemy(GameObject _prefab, Transform _parent, GameSettings _gameSettings)
     {
         GameSettings = _gameSettings;
+        MaxHealth = GameSettings.EnemyHealth;
+        Health = MaxHealth;
 
+        //Instance
         Instantiate(_prefab, _parent);
         Instance.layer = LayerMask.NameToLayer("EnemyLayer");
         Rigidbody = Instance.GetComponent<Rigidbody2D>();
         collider = Instance.GetComponent<Collider2D>();
-
-        MaxHealth = GameSettings.EnemyHealth;
-        Health = MaxHealth;
 
         //FSM
         movementFSM = new StateMachine<Enemy>(this);
@@ -37,16 +39,16 @@ public class Enemy : IDamagable, IFixedUpdateable, IInstantiatable, ICollidable<
         movementFSM.SwitchState("EnemyIdleState");
     }
 
-    public void Instantiate(GameObject _prefab, Transform _parent)
-    {
-        Instance = GameObject.Instantiate(_prefab);
-        Instance.transform.SetParent(_parent);
-    }
-
     public void OnFixedUpdate()
     {
         movementFSM.OnUpdate();
         CheckCollisions();
+    }
+
+    public void Instantiate(GameObject _prefab, Transform _parent)
+    {
+        Instance = GameObject.Instantiate(_prefab);
+        Instance.transform.SetParent(_parent);
     }
 
     public void TakeDamage(int _amount)

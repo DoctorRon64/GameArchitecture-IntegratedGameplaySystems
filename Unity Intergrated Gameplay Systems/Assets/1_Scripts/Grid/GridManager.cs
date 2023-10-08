@@ -18,6 +18,7 @@ public class GridManager
         enemyManager = _enemyManager;
         gameSettings = _gameSettings;
         gameManager = _gameManager;
+
         grid = new Tile[gameSettings.Size.x, gameSettings.Size.y];
         tileFactory = new TileFactory(gameSettings);
 

@@ -6,13 +6,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    //UI
-    public int Score { get; set; }
+    [Header("UI")]
     [SerializeField] private Text scoreText;
 
-    //ScriptableObjects
+    [Header("Cinemachine")]
+    public CinemachineVirtualCamera VirtualCamera;
+
+    [Header("ScriptableObjects")]
     [SerializeField] private GameSettings gameSettings;
     [SerializeField] private SceneManagerObject sceneManagerObject;
+
+    public int Score { get; set; }
+
     //Lists
     private List<IUpdateable> updateables = new List<IUpdateable>();
     private List<IFixedUpdateable> fixedUpdateables = new List<IFixedUpdateable>();
@@ -21,11 +26,7 @@ public class GameManager : MonoBehaviour
     private GridManager gridManager;
     private BulletManager bulletManager;
     private InputManager inputManager;
-
     private UI ui;
-
-    [Header("Cinemachine")]
-    public CinemachineVirtualCamera VirtualCamera;
 
     public void Awake()
     {
@@ -53,7 +54,6 @@ public class GameManager : MonoBehaviour
 
         //Bullet
         bulletManager = new BulletManager(gridManager, gameSettings, enemyManager);
-        AddUpdate(bulletManager);
         AddFixedUpdate(bulletManager);
 
         //Player
@@ -76,16 +76,6 @@ public class GameManager : MonoBehaviour
     public void AddFixedUpdate(IFixedUpdateable script)
     {
         fixedUpdateables.Add(script);
-    }
-
-    public void Remove(IUpdateable script)
-    {
-        updateables.Remove(script);
-
-        if (script is IFixedUpdateable)
-        {
-            fixedUpdateables.Remove(script as IFixedUpdateable);
-        }
     }
 
     private void Update()

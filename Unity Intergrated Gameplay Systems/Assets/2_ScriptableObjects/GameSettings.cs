@@ -34,6 +34,10 @@ public class GameSettings : ScriptableObject
 
     [Header("Player Settings")]
     public int PlayerHealth;
+    public float PlayerSpeed;
+    public float PlayerRotateSpeed;
+    public float PlayerDamping;
+    public float bulletSpawnDistance;
 
     [Header("Score Settings")]
     public int EnemyKillScore;

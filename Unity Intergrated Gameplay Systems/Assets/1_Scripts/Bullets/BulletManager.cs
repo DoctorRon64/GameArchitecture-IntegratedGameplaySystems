@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BulletManager : IUpdateable, IFixedUpdateable
+public class BulletManager : IFixedUpdateable
 {
     private int bulletPoolSize;
     private ObjectPool<Bullet> bulletPool;
@@ -16,16 +16,17 @@ public class BulletManager : IUpdateable, IFixedUpdateable
 
     public BulletManager(GridManager _gridManager, GameSettings _gameSettings, EnemyManager _enemyManager)
     {
-        bulletFactory = new BulletFactory(_gameSettings);
-        bulletPool = new ObjectPool<Bullet>();
         gridManager = _gridManager;
         gameSettings = _gameSettings;
         enemyManager = _enemyManager;
+
+        bulletFactory = new BulletFactory(_gameSettings);
+        bulletPool = new ObjectPool<Bullet>();
         bulletPoolSize = gameSettings.BulletPoolSize;
 
         if (bulletPoolSize <= 0)
         {
-            Debug.LogError("BulletPoolSize is too small");
+            Debug.LogError("BulletPoolSize is zero");
         }
 
         for (int i = 0; i < bulletPoolSize; i++)
@@ -38,11 +39,6 @@ public class BulletManager : IUpdateable, IFixedUpdateable
     public void OnFixedUpdate()
     {
         bulletPool.UpdateItem();
-    }
-
-    public void OnUpdate()
-    {
-        
     }
 
     public void FireBullet(Vector2 _pos, Vector2 _direction)
@@ -77,6 +73,7 @@ public class BulletManager : IUpdateable, IFixedUpdateable
             currentEnemy.TakeDamage(gameSettings.BulletDamage);
         }
 
+        //If Other is a Bullet
         if (other.gameObject.layer != LayerMask.NameToLayer("Bullet"))
         {
             bulletPool.DeactivateItem(_instance);
