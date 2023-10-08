@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     private UI ui;
 
     [Header("Cinemachine")]
-    public new CinemachineVirtualCamera camera;
+    public CinemachineVirtualCamera VirtualCamera;
 
     public void Awake()
     {
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         AddFixedUpdate(ui);
 
         //Input
-        inputManager = new InputManager(camera);
+        inputManager = new InputManager(VirtualCamera);
         AddUpdate(inputManager);
 
         //Enemys
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 
         //set cinemachine camera to player
         Player player = playerManager.GetPlayer();
-        camera.Follow = player.Instance.transform;
+        VirtualCamera.Follow = player.Instance.transform;
 
         player.OnDiePlayer += sceneManagerObject.LoadScene;
     }
