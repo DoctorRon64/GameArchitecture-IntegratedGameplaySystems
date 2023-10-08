@@ -42,7 +42,11 @@ public class Bullet : IPoolable, IInstantiatable, ICollidable<Bullet>, IUpdateab
 
     public void FireBullet(Vector2 _direction)
     {
-        Rigidbody.AddForce(_direction * gameSettings.bulletSpeed, ForceMode2D.Impulse);
+        Vector2 bulletDir = new Vector2();
+        bulletDir = _direction * gameSettings.bulletSpeed;
+        bulletDir.Normalize();
+
+        Rigidbody.AddForce(bulletDir * gameSettings.bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void CheckCollisions()

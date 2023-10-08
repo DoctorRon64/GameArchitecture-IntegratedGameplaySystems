@@ -23,9 +23,9 @@ MonoBehaviour:
     MaxHealth: 20
   HardStone:
     MaxHealth: 40
-  BulletPoolSize: 30
+  BulletPoolSize: 100
   BulletDamage: 10
-  bulletSpeed: 5
+  bulletSpeed: 10
   ShootCooldown: 0.1
   EnemyAttackRange: 20
   EnemySpeed: 15
